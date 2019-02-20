@@ -24,7 +24,7 @@ public class AppointmnetController {
     @PostMapping("/appointmentList")
     public Result getAppointmentList(@RequestBody Integer patientId) {
         if (patientId <= 0) {
-            return Result.buildError(CodeMsg.PATIENT_NOT_EXIST);
+            return Result.buildError(CodeMsg.PARAMETER_ERROR);
         }
         return appointmentService.getAppointmentList(patientId);
     }
@@ -33,6 +33,9 @@ public class AppointmnetController {
     @ApiImplicitParam(name = "param", value = "月份", required = true, dataType = "String")
     @PostMapping("/quotaList")
     public Result getQuotaList(@RequestBody String param) {
+        if (param == null) {
+            return Result.buildError(CodeMsg.PARAMETER_ERROR);
+        }
         return null;
     }
 

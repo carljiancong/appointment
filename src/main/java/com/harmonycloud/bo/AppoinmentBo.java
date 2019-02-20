@@ -1,16 +1,29 @@
 package com.harmonycloud.bo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
+@ApiModel
 public class AppoinmentBo {
+    @ApiModelProperty(name = "预约id",example = "1")
     private Integer appoinmentId;
+    @ApiModelProperty(name = "病患id",example = "1")
     private Integer patientId;
+    @ApiModelProperty(name = "诊所id",example = "1")
     private Integer clinicId;
+    @ApiModelProperty(name = "会诊类型id",example = "1")
     private Integer encounterTypeId;
+    @ApiModelProperty(name = "诊室id",example = "1")
     private Integer roomId;
+    @ApiModelProperty(name = "预约日期id",example = "02-Jan-2019")
     private Date appoinmentDate;
+    @ApiModelProperty(name = "预约能否到达",example = "1")
     private String status;
+    @ApiModelProperty(name = "是否能到达",example = "1")
     private String attendanceStatus;
+    @ApiModelProperty(name = "到达",example = "2019-02-20 11:11:39")
     private Date attendanceTime;
 
     public AppoinmentBo() {
