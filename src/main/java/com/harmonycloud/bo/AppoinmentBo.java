@@ -1,17 +1,8 @@
-package com.harmonycloud.dto;
+package com.harmonycloud.bo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
-/**
- * @author qidong
- * @date 2019/2/20
- */
-
-public class AppoinmentDto {
+public class AppoinmentBo {
     private Integer appoinmentId;
     private Integer patientId;
     private Integer clinicId;
@@ -22,12 +13,12 @@ public class AppoinmentDto {
     private String attendanceStatus;
     private Date attendanceTime;
 
-    public AppoinmentDto() {
+    public AppoinmentBo() {
     }
 
-    public AppoinmentDto(Integer appoinmentId, Integer patientId, Integer clinicId,
-                         Integer encounterTypeId, Integer roomId, Date appoinmentDate, String status,
-                         String attendanceStatus, Date attendanceTime) {
+    public AppoinmentBo(Integer appoinmentId, Integer patientId, Integer clinicId,
+                        Integer encounterTypeId, Integer roomId, Date appoinmentDate, String status,
+                        String attendanceStatus, Date attendanceTime) {
         this.appoinmentId = appoinmentId;
         this.patientId = patientId;
         this.clinicId = clinicId;

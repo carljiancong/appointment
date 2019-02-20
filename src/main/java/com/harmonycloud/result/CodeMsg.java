@@ -14,9 +14,9 @@ public class CodeMsg {
     /**
      * appointment service
      */
-    public static CodeMsg PATIENT_NOT_EXIST = new CodeMsg("patient is not exist");
-    public static CodeMsg DATA_QUERY_ERROR = new CodeMsg("data query error");
-//    public static CodeMsg LOGIN_FAIL = new CodeMsg("login failed");
+    public static CodeMsg PATIENT_NOT_EXIST = new CodeMsg("Patient is not exist");
+    public static CodeMsg DATA_QUERY_ERROR = new CodeMsg("Data query error");
+    public static CodeMsg FAIL = new CodeMsg("Service error");
 
     public String getMsg() {
         return msg;

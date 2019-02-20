@@ -1,13 +1,12 @@
 package com.harmonycloud.service;
 
-import com.harmonycloud.dto.AppoinmentDto;
+import com.harmonycloud.bo.AppoinmentBo;
 import com.harmonycloud.entity.AppointmentQuota;
 import com.harmonycloud.repository.AppointmentRepository;
 import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,7 +35,7 @@ public class AppointmentService {
 
 
     public Result getAppointmentList(Integer patientId) {
-        List<AppoinmentDto> appoinmentDtoList = null;
+        List<AppoinmentBo> appoinmentDtoList = null;
         try {
             appoinmentDtoList = appointmentRepository.findByPatientId(patientId);
             if (appoinmentDtoList.size() == 0 || appoinmentDtoList == null) {
