@@ -1,18 +1,31 @@
 package com.harmonycloud.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * @author qidong
  * @date 2019/2/13
  */
+@Entity
+@Table(name = "Appoinment_quota")
 public class AppointmentQuota {
+    @Id
     private Integer appoinmentQuotaId;
+    @Column(name = "clinic_id")
     private Integer clinicId;
+    @Column(name = "encounter_type_id")
     private Integer encounterTypeId;
+    @Column(name = "room_id")
     private Integer roomId;
+    @Column(name = "appoinment_date")
     private Date appoinmentDate;
+    @Column(name = "quota")
     private Integer quota;
+    @Column(name = "quota_booked")
     private Integer quotaBooked;
 
     public AppointmentQuota() {

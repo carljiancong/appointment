@@ -1,4 +1,4 @@
-package com.harmonycloud.entity;
+package com.harmonycloud.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,37 +8,26 @@ import java.util.Date;
 
 /**
  * @author qidong
- * @date 2019/2/13
+ * @date 2019/2/20
  */
 
-@Entity
-@Table(name = "appoinment_id")
-public class Appoinment {
-    @Id
+public class AppoinmentDto {
     private Integer appoinmentId;
-    @Column(name = "patient_id")
     private Integer patientId;
-    @Column(name = "clinic_id")
     private Integer clinicId;
-    @Column(name = "encounter_type_id")
     private Integer encounterTypeId;
-    @Column(name = "room_id")
     private Integer roomId;
-    @Column(name = "appoinment_date")
     private Date appoinmentDate;
-    @Column(name = "status")
     private String status;
-    @Column(name = "attendance_status")
     private String attendanceStatus;
-    @Column(name = "attendance_time")
     private Date attendanceTime;
 
-    public Appoinment() {
+    public AppoinmentDto() {
     }
 
-    public Appoinment(Integer appoinmentId, Integer patientId, Integer clinicId,
-                      Integer encounterTypeId, Integer roomId, Date appoinmentDate, String status,
-                      String attendanceStatus, Date attendanceTime) {
+    public AppoinmentDto(Integer appoinmentId, Integer patientId, Integer clinicId,
+                         Integer encounterTypeId, Integer roomId, Date appoinmentDate, String status,
+                         String attendanceStatus, Date attendanceTime) {
         this.appoinmentId = appoinmentId;
         this.patientId = patientId;
         this.clinicId = clinicId;

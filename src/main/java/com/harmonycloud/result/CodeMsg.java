@@ -4,6 +4,9 @@ package com.harmonycloud.result;
 public class CodeMsg {
     private String msg;
 
+    public CodeMsg() {
+    }
+
     public CodeMsg(String msg) {
         this.msg = msg;
     }
@@ -11,8 +14,8 @@ public class CodeMsg {
     /**
      * appointment service
      */
-    public static CodeMsg Fail = new CodeMsg("appointment_fail");
-//    public static CodeMsg PASSWORD_ERROR = new CodeMsg("password wrong");
+    public static CodeMsg PATIENT_NOT_EXIST = new CodeMsg("patient is not exist");
+    public static CodeMsg DATA_QUERY_ERROR = new CodeMsg("data query error");
 //    public static CodeMsg LOGIN_FAIL = new CodeMsg("login failed");
 
     public String getMsg() {
@@ -25,6 +28,8 @@ public class CodeMsg {
 
     @Override
     public String toString() {
-        return "msg=" + msg;
+        return "CodeMsg{" +
+                "msg='" + msg + '\'' +
+                '}';
     }
 }

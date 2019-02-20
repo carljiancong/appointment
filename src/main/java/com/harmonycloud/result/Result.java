@@ -1,27 +1,39 @@
 package com.harmonycloud.result;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.io.Serializable;
 
 
 public class Result implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Boolean msg;
+    private Object errorMessage;
+    private Boolean success;
     private Object data;
 
+    public Object getErrorMessage() {
+        return errorMessage;
+    }
 
-    public Result(Boolean msg, Object data) {
-        this.msg = msg;
+    public void setErrorMessage(Object errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public Result(CodeMsg errorMessage, Boolean success) {
+        this.errorMessage = errorMessage.getMsg();
+        this.success = success;
+    }
+
+    public Result(Boolean success, Object data) {
+        this.success = success;
         this.data = data;
     }
 
-    public Boolean getMsg() {
-        return msg;
+    public Boolean getSuccess() {
+        return success;
     }
 
-    public void setMsg(Boolean msg) {
-        this.msg = msg;
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 
     public Object getData() {
@@ -40,8 +52,8 @@ public class Result implements Serializable {
 
 
 
-    public static Result buildError(Object errorData){
-        return new Result(false, errorData);
+    public static Result buildError(CodeMsg errorMessage){
+        return new Result(errorMessage,false);
     }
 
     public static Result buildSuccess(Object data){
