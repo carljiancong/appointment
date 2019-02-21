@@ -12,10 +12,10 @@ import java.util.Date;
  */
 
 @Entity
-@Table(name = "appoinment_id")
+@Table(name = "appoinment")
 public class Appoinment {
     @Id
-    private Integer appoinmentId;
+    private Integer appointmentId;
     @Column(name = "patient_id")
     private Integer patientId;
     @Column(name = "clinic_id")
@@ -24,8 +24,8 @@ public class Appoinment {
     private Integer encounterTypeId;
     @Column(name = "room_id")
     private Integer roomId;
-    @Column(name = "appoinment_date")
-    private Date appoinmentDate;
+    @Column(name = "appointment_date")
+    private String appointmentDate;
     @Column(name = "status")
     private String status;
     @Column(name = "attendance_status")
@@ -36,26 +36,26 @@ public class Appoinment {
     public Appoinment() {
     }
 
-    public Appoinment(Integer appoinmentId, Integer patientId, Integer clinicId,
-                      Integer encounterTypeId, Integer roomId, Date appoinmentDate, String status,
+    public Appoinment(Integer appointmentId, Integer patientId, Integer clinicId,
+                      Integer encounterTypeId, Integer roomId, String appointmentDate, String status,
                       String attendanceStatus, Date attendanceTime) {
-        this.appoinmentId = appoinmentId;
+        this.appointmentId = appointmentId;
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
         this.roomId = roomId;
-        this.appoinmentDate = appoinmentDate;
+        this.appointmentDate = appointmentDate;
         this.status = status;
         this.attendanceStatus = attendanceStatus;
         this.attendanceTime = attendanceTime;
     }
 
     public Integer getId() {
-        return appoinmentId;
+        return appointmentId;
     }
 
-    public void setId(Integer appoinmentId) {
-        this.appoinmentId = appoinmentId;
+    public void setId(Integer appointmentId) {
+        this.appointmentId = appointmentId;
     }
 
     public Integer getPatientId() {
@@ -90,12 +90,12 @@ public class Appoinment {
         this.roomId = roomId;
     }
 
-    public Date getDate() {
-        return appoinmentDate;
+    public String getDate() {
+        return appointmentDate;
     }
 
-    public void setDate(Date appoinmentDate) {
-        this.appoinmentDate = appoinmentDate;
+    public void setDate(String appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
 
     public String getStatus() {

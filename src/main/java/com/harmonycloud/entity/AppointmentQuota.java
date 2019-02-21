@@ -4,25 +4,25 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
+
 
 /**
  * @author qidong
- * @date 2019/2/13
+ * @String 2019/2/13
  */
 @Entity
 @Table(name = "Appoinment_quota")
 public class AppointmentQuota {
     @Id
-    private Integer appoinmentQuotaId;
+    private Integer appointmentQuotaId;
     @Column(name = "clinic_id")
     private Integer clinicId;
     @Column(name = "encounter_type_id")
     private Integer encounterTypeId;
     @Column(name = "room_id")
     private Integer roomId;
-    @Column(name = "appoinment_date")
-    private Date appoinmentDate;
+    @Column(name = "appointment_date")
+    private String appointmentDate;
     @Column(name = "quota")
     private Integer quota;
     @Column(name = "quota_booked")
@@ -31,23 +31,31 @@ public class AppointmentQuota {
     public AppointmentQuota() {
     }
 
-    public AppointmentQuota(Integer appoinmentQuotaId, Integer clinicId, Integer encounterTypeId,
-                            Integer roomId, Date appoinmentDate, Integer quota, Integer quotaBooked) {
-        this.appoinmentQuotaId = appoinmentQuotaId;
+    public AppointmentQuota(Integer appointmentQuotaId, Integer clinicId, Integer encounterTypeId,
+                            Integer roomId, String appointmentDate, Integer quota, Integer quotaBooked) {
+        this.appointmentQuotaId = appointmentQuotaId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
         this.roomId = roomId;
-        this.appoinmentDate = appoinmentDate;
+        this.appointmentDate = appointmentDate;
         this.quota = quota;
         this.quotaBooked = quotaBooked;
     }
 
-    public Integer getId() {
-        return appoinmentQuotaId;
+    public Integer getAppointmentQuotaId() {
+        return appointmentQuotaId;
     }
 
-    public void setId(Integer appoinmentQuotaId) {
-        this.appoinmentQuotaId = appoinmentQuotaId;
+    public void setAppointmentQuotaId(Integer appointmentQuotaId) {
+        this.appointmentQuotaId = appointmentQuotaId;
+    }
+
+    public String getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public void setAppointmentDate(String appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
 
     public Integer getClinicId() {
@@ -74,12 +82,12 @@ public class AppointmentQuota {
         this.roomId = roomId;
     }
 
-    public Date getDate() {
-        return appoinmentDate;
+    public String getDate() {
+        return appointmentDate;
     }
 
-    public void setDate(Date appoinmentDate) {
-        this.appoinmentDate = appoinmentDate;
+    public void setDate(String appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
 
     public Integer getQuota() {

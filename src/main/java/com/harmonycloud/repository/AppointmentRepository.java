@@ -2,6 +2,7 @@ package com.harmonycloud.repository;
 
 import com.harmonycloud.bo.AppoinmentBo;
 import com.harmonycloud.entity.Appoinment;
+import com.harmonycloud.entity.AppointmentQuota;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,5 @@ public interface AppointmentRepository extends JpaRepository<Appoinment,Integer>
      * @return
      */
     List<AppoinmentBo> findByPatientId(Integer patientId);
+
 }

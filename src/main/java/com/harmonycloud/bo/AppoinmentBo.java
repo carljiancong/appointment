@@ -8,7 +8,7 @@ import java.util.Date;
 @ApiModel
 public class AppoinmentBo {
     @ApiModelProperty(name = "预约id",example = "1")
-    private Integer appoinmentId;
+    private Integer appointmentId;
     @ApiModelProperty(name = "病患id",example = "1")
     private Integer patientId;
     @ApiModelProperty(name = "诊所id",example = "1")
@@ -18,7 +18,7 @@ public class AppoinmentBo {
     @ApiModelProperty(name = "诊室id",example = "1")
     private Integer roomId;
     @ApiModelProperty(name = "预约日期id",example = "02-Jan-2019")
-    private Date appoinmentDate;
+    private String appointmentDate;
     @ApiModelProperty(name = "预约能否到达",example = "1")
     private String status;
     @ApiModelProperty(name = "是否能到达",example = "1")
@@ -29,26 +29,26 @@ public class AppoinmentBo {
     public AppoinmentBo() {
     }
 
-    public AppoinmentBo(Integer appoinmentId, Integer patientId, Integer clinicId,
-                        Integer encounterTypeId, Integer roomId, Date appoinmentDate, String status,
+    public AppoinmentBo(Integer appointmentId, Integer patientId, Integer clinicId,
+                        Integer encounterTypeId, Integer roomId, String appointmentDate, String status,
                         String attendanceStatus, Date attendanceTime) {
-        this.appoinmentId = appoinmentId;
+        this.appointmentId = appointmentId;
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
         this.roomId = roomId;
-        this.appoinmentDate = appoinmentDate;
+        this.appointmentDate = appointmentDate;
         this.status = status;
         this.attendanceStatus = attendanceStatus;
         this.attendanceTime = attendanceTime;
     }
 
     public Integer getId() {
-        return appoinmentId;
+        return appointmentId;
     }
 
     public void setId(Integer appoinmentId) {
-        this.appoinmentId = appoinmentId;
+        this.appointmentId = appoinmentId;
     }
 
     public Integer getPatientId() {
@@ -83,12 +83,12 @@ public class AppoinmentBo {
         this.roomId = roomId;
     }
 
-    public Date getDate() {
-        return appoinmentDate;
+    public String getDate() {
+        return appointmentDate;
     }
 
-    public void setDate(Date appoinmentDate) {
-        this.appoinmentDate = appoinmentDate;
+    public void setDate(String appoinmentDate) {
+        this.appointmentDate = appoinmentDate;
     }
 
     public String getStatus() {

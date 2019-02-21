@@ -1,5 +1,6 @@
 package com.harmonycloud.Controller;
 
+import com.harmonycloud.bo.AppointmentByMonth;
 import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
 import com.harmonycloud.service.AppointmentService;
@@ -30,13 +31,14 @@ public class AppointmnetController {
     }
 
     @ApiOperation(value = "获取某一个月的预约额度列表")
-    @ApiImplicitParam(name = "param", value = "月份", required = true, dataType = "String")
+    @ApiImplicitParam(name = "appointmentByMonth", value = "月份", required = true, dataType = "AppointmentByMonth")
     @PostMapping("/quotaList")
-    public Result getQuotaList(@RequestBody String param) {
-        if (param == null) {
+    public Result getQuotaList(@RequestBody AppointmentByMonth appointmentByMonth) {
+        if (appointmentByMonth.getClinicId() == null || appointmentByMonth.getEncounterTypeId() == null ||
+            appointmentByMonth.getRoomId() == null) {
             return Result.buildError(CodeMsg.PARAMETER_ERROR);
         }
-        return null;
+        return appointmentService.getQuotaList(appointmentByMonth);
     }
 
 }

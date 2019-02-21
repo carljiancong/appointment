@@ -25,8 +25,8 @@ public class Encounter {
     private Integer roomId;
     @Column(name = "date_time")
     private Date dateTime;
-    @Column(name = "appinment_id")
-    private Integer appinmentId;
+    @Column(name = "appointment_id")
+    private Integer appointmentId;
     public Encounter() {
     }
 
@@ -39,22 +39,22 @@ public class Encounter {
     }
 
     public Integer getAppinmentId() {
-        return appinmentId;
+        return appointmentId;
     }
 
-    public void setAppinmentId(Integer appinmentId) {
-        this.appinmentId = appinmentId;
+    public void setAppinmentId(Integer appointmentId) {
+        this.appointmentId = appointmentId;
     }
 
     public Encounter(Integer encounterId, Integer patientId, Integer encounterTypeId,
-                     Integer clinicId, Integer roomId, Date dateTime, Integer appinmentId) {
+                     Integer clinicId, Integer roomId, Date dateTime, Integer appointmentId) {
         this.encounterId = encounterId;
         this.patientId = patientId;
         this.encounterTypeId = encounterTypeId;
         this.clinicId = clinicId;
         this.roomId = roomId;
         this.dateTime = dateTime;
-        this.appinmentId = appinmentId;
+        this.appointmentId = appointmentId;
     }
 
     public Integer getId() {

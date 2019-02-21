@@ -1,7 +1,9 @@
 package com.harmonycloud.service;
 
 import com.harmonycloud.bo.AppoinmentBo;
+import com.harmonycloud.bo.AppointmentByMonth;
 import com.harmonycloud.entity.AppointmentQuota;
+import com.harmonycloud.repository.AppointmentQuotaRepository;
 import com.harmonycloud.repository.AppointmentRepository;
 import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
@@ -20,11 +22,15 @@ public class AppointmentService {
     @Resource
     private AppointmentRepository appointmentRepository;
 
-    public List<AppointmentQuota> listquota(int month, int clinicid, int encountertypeid) {
+    @Resource
+    private AppointmentQuotaRepository appointmentQuotaRepository;
+
+    public Result getQuotaList(AppointmentByMonth appointmentByMonth) {
+//        int month, int clinicid, int encountertypeid
         try{
-            String strParaMonthn = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec";
-            String[] strSubMonth = strParaMonthn.split("_".toCharArray().toString());
-            String strReturn = strSubMonth[month - 1];
+//            String strParaMonthn = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec";
+//            String[] strSubMonth = strParaMonthn.split("_".toCharArray().toString());
+//            String strReturn = strSubMonth[month - 1];
 
 
         }catch (Exception e){
