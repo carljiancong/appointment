@@ -8,11 +8,21 @@ public class AppointmentByMonth {
     private Integer clinicId;
     private Integer encounterTypeId;
     private Integer roomId;
+    private String monthYear;
 
-    public AppointmentByMonth(Integer clinicId, Integer encounterTypeId, Integer roomId) {
+    public AppointmentByMonth(Integer clinicId, Integer encounterTypeId, Integer roomId,String monthYear) {
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
         this.roomId = roomId;
+        this.monthYear = monthYear;
+    }
+
+    public String getMonthYear() {
+        return monthYear;
+    }
+
+    public void setMonthYear(String monthYear) {
+        this.monthYear = monthYear;
     }
 
     public AppointmentByMonth() {
