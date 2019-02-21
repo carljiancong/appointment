@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author qidong
@@ -11,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "holiday")
-public class Holiday {
+public class Holiday implements Serializable {
     @Id
     private Integer holidayId;
     @Column(name = "holiday_date")

@@ -1,14 +1,17 @@
 package com.harmonycloud.service;
 
 import com.harmonycloud.bo.AppoinmentBo;
-import com.harmonycloud.bo.AppointmentByMonth;
 import com.harmonycloud.entity.AppointmentQuota;
-import com.harmonycloud.repository.AppointmentQuotaRepository;
+import com.harmonycloud.entity.Holiday;
 import com.harmonycloud.repository.AppointmentRepository;
+import com.harmonycloud.repository.HolidayRepository;
 import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,21 +26,10 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
 
     @Resource
-    private AppointmentQuotaRepository appointmentQuotaRepository;
+    private HolidayRepository holidayRepository;
 
-    public Result getQuotaList(AppointmentByMonth appointmentByMonth) {
-//        int month, int clinicid, int encountertypeid
-        try{
-//            String strParaMonthn = "Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec";
-//            String[] strSubMonth = strParaMonthn.split("_".toCharArray().toString());
-//            String strReturn = strSubMonth[month - 1];
-
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
+    @Autowired
+    RedisTemplate redisTemplate;
 
 
     public Result getAppointmentList(Integer patientId) {
@@ -47,10 +39,20 @@ public class AppointmentService {
             if (appoinmentDtoList.size() == 0 || appoinmentDtoList == null) {
                 return Result.buildError(CodeMsg.PATIENT_NOT_EXIST);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.info(e.getMessage());
             return Result.buildError(CodeMsg.DATA_QUERY_ERROR);
         }
         return Result.buildSuccess(appoinmentDtoList);
+    }
+
+    @Cacheable(value = "holiday", unless = "#result == null")
+    public List<Holiday> getHoliday() {
+        try {
+            return holidayRepository.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
