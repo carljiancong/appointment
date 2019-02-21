@@ -1,17 +1,22 @@
-package com.harmonycloud.Controller;
+package com.harmonycloud.controller;
 
+import com.harmonycloud.bo.AppointmentBo;
 import com.harmonycloud.bo.AppointmentByMonth;
+import com.harmonycloud.entity.Holiday;
 import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
 import com.harmonycloud.service.AppointmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 @Api(value = "预约controller", tags = {"预约操作接口"})
 @RestController
@@ -30,15 +35,22 @@ public class AppointmnetController {
         return appointmentService.getAppointmentList(patientId);
     }
 
-    @ApiOperation(value = "获取某一个月的预约额度列表")
-    @ApiImplicitParam(name = "appointmentByMonth", value = "月份", required = true, dataType = "AppointmentByMonth")
-    @PostMapping("/quotaList")
-    public Result getQuotaList(@RequestBody AppointmentByMonth appointmentByMonth) {
-        if (appointmentByMonth.getClinicId() == null || appointmentByMonth.getEncounterTypeId() == null ||
-            appointmentByMonth.getRoomId() == null) {
-            return Result.buildError(CodeMsg.PARAMETER_ERROR);
-        }
-        return appointmentService.getQuotaList(appointmentByMonth);
+//    @ApiOperation(value = "获取某一个月的预约额度列表")
+//    @ApiImplicitParam(name = "appointmentByMonth", value = "月份", required = true, dataType = "AppointmentByMonth")
+//    @PostMapping("/quotaList")
+//    public Result getQuotaList(@RequestBody AppointmentByMonth appointmentByMonth) {
+//        if (appointmentByMonth.getClinicId() == null || appointmentByMonth.getEncounterTypeId() == null ||
+//            appointmentByMonth.getRoomId() == null) {
+//            return Result.buildError(CodeMsg.PARAMETER_ERROR);
+//        }
+//        return appointmentService.getQuotaList(appointmentByMonth);
+//    }
+
+    @ApiOperation(value = "Book Appointment")
+    @ApiImplicitParam(name = "appointmentBo",value = "预约信息",dataType = "AppointmentBo")
+    @PostMapping("/book")
+    public Result bookAppointment(@RequestBody AppointmentBo appointmentBo){
+        return appointmentService.bookAppointment(appointmentBo);
     }
 
 }

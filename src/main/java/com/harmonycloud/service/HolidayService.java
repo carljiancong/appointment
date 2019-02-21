@@ -19,6 +19,7 @@ public class HolidayService {
     @Resource
     private HolidayRepository holidayRepository;
 
+    @Cacheable(value = "holiday", unless = "#result == null")
     public List<String> getHolidayDate(String monthYear) {
         List<String> holidayDateList = null;
         try {
@@ -28,15 +29,5 @@ public class HolidayService {
             return null;
         }
         return holidayDateList;
-    }
-
-    @Cacheable(value = "holiday", unless = "#result == null")
-    public List<Holiday> getHoliday() {
-        try {
-            return holidayRepository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }

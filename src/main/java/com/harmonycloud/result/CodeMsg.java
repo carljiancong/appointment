@@ -18,6 +18,7 @@ public class CodeMsg {
     public static CodeMsg DATA_QUERY_ERROR = new CodeMsg("Data query error");
     public static CodeMsg SERVICE_ERROR = new CodeMsg("Service error");
     public static CodeMsg PARAMETER_ERROR = new CodeMsg("Parameter error");
+    public static CodeMsg DUPLICATED_BOOKING = new CodeMsg("Duplicated booking");
     public String getMsg() {
         return msg;
     }
