@@ -20,16 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Api(value = "预约controller", tags = {"预约操作接口"})
+@Api(tags = {"Appointment"})
 @RestController
 public class AppointmnetController {
 
     @Resource
     AppointmentService appointmentService;
 
-    @ApiOperation(value = "获取某一个病人的所有预约")
-    @ApiImplicitParam(name = "patientId", value = "病人id", required = true, dataType = "Integer")
-    @GetMapping("/appointmentList")
+    @ApiOperation(value = "patient appointment list")
+    @ApiImplicitParam(name = "patientId", value = "patientId", required = true, dataType = "Integer")
+    @PostMapping("/appointmentList")
     public Result getAppointmentList(@RequestBody Integer patientId) {
         if (patientId <= 0) {
             return Result.buildError(CodeMsg.PARAMETER_ERROR);
@@ -37,9 +37,9 @@ public class AppointmnetController {
         return appointmentService.getAppointmentList(patientId);
     }
 
-    @ApiOperation(value = "获取某一个月的预约额度列表")
-    @ApiImplicitParam(name = "appointmentByMonth", value = "月份", required = true, dataType = "AppointmentByMonth")
-    @GetMapping("/quotaList")
+    @ApiOperation(value = "quota list")
+    @ApiImplicitParam(name = "appointmentByMonth", value = "appointmentByMonth", required = true, dataType = "AppointmentByMonth")
+    @PostMapping("/quotaList")
     public Result getQuotaList(@RequestBody AppointmentByMonth appointmentByMonth) {
         if (appointmentByMonth.getClinicId() == null || appointmentByMonth.getEncounterTypeId() == null ||
             appointmentByMonth.getRoomId() == null) {
@@ -49,16 +49,16 @@ public class AppointmnetController {
     }
 
     @ApiOperation(value = "Book Appointment")
-    @ApiImplicitParam(name = "appointmentBo",value = "预约信息",dataType = "AppointmentBo")
+    @ApiImplicitParam(name = "appointmentBo",value = "appointment message",dataType = "AppointmentBo")
     @PostMapping("/book")
     public Result bookAppointment(@RequestBody AppointmentBo appointmentBo){
         return appointmentService.bookAppointment(appointmentBo);
     }
 
 
-    @ApiOperation(value = "获取病患出席列表")
-    @ApiImplicitParam(name = "AppointmentAttend",value = "查询出席信息",dataType = "AppointmentAttend")
-    @GetMapping("/attendList")
+    @ApiOperation(value = "attend list")
+    @ApiImplicitParam(name = "AppointmentAttend",value = "appointment attend",dataType = "AppointmentAttend")
+    @PostMapping("/attendList")
     public Result getAttendList(@RequestBody AppointmentAttend appointmentAttend)  {
         if (appointmentAttend.getAppointmentDate() == null || appointmentAttend.getAttendanceStatus() == null
                              || appointmentAttend.getRoomId() == null) {
