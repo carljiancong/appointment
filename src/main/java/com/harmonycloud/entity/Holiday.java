@@ -27,19 +27,23 @@ public class Holiday implements Serializable {
         this.holidayDescription = holidayDescription;
     }
 
-    public Integer getId() {
+    public Holiday(String holidayDate) {
+        this.holidayDate = holidayDate;
+    }
+
+    public Integer getHolidayId() {
         return holidayId;
     }
 
-    public void setId(Integer holidayId) {
+    public void setHolidayId(Integer holidayId) {
         this.holidayId = holidayId;
     }
 
-    public String getDate() {
+    public String getHolidayDate() {
         return holidayDate;
     }
 
-    public void setDate(String holidayDate) {
+    public void setHolidayDate(String holidayDate) {
         this.holidayDate = holidayDate;
     }
 

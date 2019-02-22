@@ -67,6 +67,19 @@ public class Appointment {
         this.attendanceStatus = attendanceStatus;
     }
 
+    public Appointment(Integer appointmentId, Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, String appointmentDate,
+                       String status, String attendanceStatus, String attendanceTime) {
+        this.appointmentId = appointmentId;
+        this.patientId = patientId;
+        this.clinicId = clinicId;
+        this.encounterTypeId = encounterTypeId;
+        this.roomId = roomId;
+        this.appointmentDate = appointmentDate;
+        this.status = status;
+        this.attendanceStatus = attendanceStatus;
+        this.attendanceTime = attendanceTime;
+    }
+
     public Integer getAppointmentId() {
         return appointmentId;
     }

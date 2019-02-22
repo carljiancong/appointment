@@ -1,5 +1,6 @@
 package com.harmonycloud.controller;
 
+import com.harmonycloud.bo.AppointmentAttend;
 import com.harmonycloud.bo.AppointmentBo;
 import com.harmonycloud.bo.AppointmentByMonth;
 import com.harmonycloud.entity.Holiday;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +29,7 @@ public class AppointmnetController {
 
     @ApiOperation(value = "获取某一个病人的所有预约")
     @ApiImplicitParam(name = "patientId", value = "病人id", required = true, dataType = "Integer")
-    @PostMapping("/appointmentList")
+    @GetMapping("/appointmentList")
     public Result getAppointmentList(@RequestBody Integer patientId) {
         if (patientId <= 0) {
             return Result.buildError(CodeMsg.PARAMETER_ERROR);
@@ -37,7 +39,7 @@ public class AppointmnetController {
 
 //    @ApiOperation(value = "获取某一个月的预约额度列表")
 //    @ApiImplicitParam(name = "appointmentByMonth", value = "月份", required = true, dataType = "AppointmentByMonth")
-//    @PostMapping("/quotaList")
+//    @GetMapping("/quotaList")
 //    public Result getQuotaList(@RequestBody AppointmentByMonth appointmentByMonth) {
 //        if (appointmentByMonth.getClinicId() == null || appointmentByMonth.getEncounterTypeId() == null ||
 //            appointmentByMonth.getRoomId() == null) {
@@ -53,4 +55,15 @@ public class AppointmnetController {
         return appointmentService.bookAppointment(appointmentBo);
     }
 
+
+    @ApiOperation(value = "获取病患出席列表")
+    @ApiImplicitParam(name = "AppointmentAttend",value = "查询出席信息",dataType = "AppointmentAttend")
+    @GetMapping("/attendList")
+    public Result getAttendList(@RequestBody AppointmentAttend appointmentAttend)  {
+        if (appointmentAttend.getAppointmentDate() == null || appointmentAttend.getAttendanceStatus() == null
+                             || appointmentAttend.getRoomId() == null) {
+            return Result.buildError(CodeMsg.PARAMETER_ERROR);
+        }
+        return appointmentService.getAttendList(appointmentAttend);
+    }
 }

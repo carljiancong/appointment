@@ -1,5 +1,6 @@
 package com.harmonycloud.repository;
 
+import com.harmonycloud.bo.HolidayBo;
 import com.harmonycloud.entity.Holiday;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,7 +13,8 @@ import java.util.List;
 public interface HolidayRepository extends JpaRepository<Holiday,Integer> {
 
     @Modifying
-    @Query("select new com.harmonycloud.bo.HolidayBo(h.date) from Holiday h where h.date like concat('%',?1)")
-    List<String> findByMonthYear(String monthYear);
+    @Query("select new com.harmonycloud.entity.Holiday(h.holidayDate) from Holiday h where h.holidayDate = ?1")
+    List<Holiday> findByMonthYear(String monthYear);
+
 
 }

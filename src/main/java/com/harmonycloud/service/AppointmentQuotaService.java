@@ -2,6 +2,7 @@ package com.harmonycloud.service;
 
 import com.harmonycloud.bo.AppointmentByMonth;
 import com.harmonycloud.bo.AppointmentQuotaBo;
+import com.harmonycloud.entity.AppointmentQuota;
 import com.harmonycloud.repository.AppointmentQuotaRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +19,17 @@ public class AppointmentQuotaService {
     @Resource
     private AppointmentQuotaRepository appointmentQuotaRepository;
 
-    public List<AppointmentQuotaBo> getAppointmentQuotaBoList(AppointmentByMonth appointmentByMonth) {
-        List<AppointmentQuotaBo> appointmentQuotaBoList = null;
+    public List<AppointmentQuota> getAppointmentQuotaList(AppointmentByMonth appointmentByMonth) {
+        List<AppointmentQuota> appointmentQuotaList = null;
         try {
-            appointmentQuotaBoList = appointmentQuotaRepository.findByMonth(
+            appointmentQuotaList = appointmentQuotaRepository.findByMonthYearLike(
                     appointmentByMonth.getClinicId(),appointmentByMonth.getEncounterTypeId(),
-                    appointmentByMonth.getRoomId(),appointmentByMonth.getMonthYear()
+                    appointmentByMonth.getRoomId(), appointmentByMonth.getMonthYear()
             );
         } catch(Exception e) {
             e.printStackTrace();
             return null;
         }
-        return appointmentQuotaBoList;
+        return appointmentQuotaList;
     }
 }

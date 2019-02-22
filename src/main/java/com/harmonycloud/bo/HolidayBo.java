@@ -23,6 +23,10 @@ public class HolidayBo {
         this.holidayDescription = holidayDescription;
     }
 
+    public HolidayBo(String holidayDate) {
+        this.holidayDate = holidayDate;
+    }
+
     public Integer getId() {
         return holidayId;
     }
@@ -31,11 +35,11 @@ public class HolidayBo {
         this.holidayId = holidayId;
     }
 
-    public String getDate() {
+    public String getHolidayDate() {
         return holidayDate;
     }
 
-    public void setDate(String holidayDate) {
+    public void setHolidayDate(String holidayDate) {
         this.holidayDate = holidayDate;
     }
 

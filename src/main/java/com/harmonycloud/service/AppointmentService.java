@@ -1,10 +1,12 @@
 package com.harmonycloud.service;
 
+import com.harmonycloud.bo.AppointmentAttend;
 import com.harmonycloud.bo.AppointmentBo;
 import com.harmonycloud.bo.AppointmentByMonth;
 import com.harmonycloud.bo.AppointmentQuotaBo;
 import com.harmonycloud.dto.AppointmentQuotaDto;
 import com.harmonycloud.entity.Appointment;
+import com.harmonycloud.entity.AppointmentQuota;
 import com.harmonycloud.entity.Encounter;
 import com.harmonycloud.repository.AppointmentRepository;
 import com.harmonycloud.result.CodeMsg;
@@ -12,6 +14,7 @@ import com.harmonycloud.result.Result;
 import org.aspectj.apache.bcel.classfile.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,39 +33,38 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
 
     @Resource
+    private AppointmentQuotaService appointmentQuotaService;
+
+    @Resource
     private EncouterService encouterService;
 
-//    @Resource
-//    private AppointmentQuotaService appointmentQuotaService;
-//
-//    @Resource
-//    private HolidayService holidayService;
+    @Resource
+    private HolidayService holidayService;
 
-//    public Result getQuotaList(AppointmentByMonth appointmentByMonth) {
-//        try {
-//            //获取该年月下的所有假期，并放入set集合中
-//            List<String> holidayDateList = holidayService.getHolidayDate(appointmentByMonth.getMonthYear());
-//            Set<String> holidayDateSet = new HashSet<>(holidayDateList);
-//
-//            //获取该年月下的所有预约额度
-//            List<AppointmentQuotaBo> appointmentQuotaBoList = appointmentQuotaService.getAppointmentQuotaBoList(appointmentByMonth);
-//
-//            List<AppointmentQuotaDto> appointmentQuotaDtoList = new ArrayList<>();
-//            for (AppointmentQuotaBo aqb : appointmentQuotaBoList) {
-//                AppointmentQuotaDto appointmentQuotaDto = new AppointmentQuotaDto();
-//                appointmentQuotaDto.setAppointmentQuotaBo(aqb);
-//                if (holidayDateSet.contains(aqb.getDate())) {
-//                    appointmentQuotaDto.setHolidayDate(true);
-//                } else {
-//                    appointmentQuotaDto.setHolidayDate(false);
-//                }
-//            }
-//            return Result.buildSuccess(appointmentQuotaDtoList);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return Result.buildError(CodeMsg.DATA_QUERY_ERROR);
-//        }
-//    }
+    public Result getQuotaList(AppointmentByMonth appointmentByMonth) {
+        try{
+            //获取该年月下的所有假期，并放入set集合中
+            Set<String> holidayDateSet = holidayService.getHolidayDate();
+
+            //获取该年月下的所有预约额度
+            List<AppointmentQuota> appointmentQuotaBoList = appointmentQuotaService.getAppointmentQuotaList(appointmentByMonth);
+
+            List<AppointmentQuotaDto> appointmentQuotaDtoList = new ArrayList<>();
+            for (AppointmentQuota aqb: appointmentQuotaBoList) {
+                AppointmentQuotaDto appointmentQuotaDto = new AppointmentQuotaDto();
+                appointmentQuotaDto.setAppointmentQuota(aqb);
+                if (holidayDateSet.contains(aqb.getAppointmentDate())) {
+                    appointmentQuotaDto.setHolidayDate(true);
+                } else {
+                    appointmentQuotaDto.setHolidayDate(false);
+                }
+            }
+            return Result.buildSuccess(appointmentQuotaDtoList);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.buildError(CodeMsg.DATA_QUERY_ERROR);
+        }
+    }
 
 
     public Result getAppointmentList(Integer patientId) {
@@ -129,5 +131,29 @@ public class AppointmentService {
             e.printStackTrace();
             return Result.buildError(CodeMsg.SERVICE_ERROR);
         }
+
+    }
+
+
+    public Result getAttendList(AppointmentAttend appointmentAttend) {
+        List<Appointment> appointmentList = null;
+        try {
+            if (appointmentAttend.getRoomId() == 0 && "All".equals(appointmentAttend.getAttendanceStatus())) {
+                appointmentList = appointmentRepository.findByDate(appointmentAttend.getAppointmentDate());
+            } else if (appointmentAttend.getRoomId() != 0 && "All".equals(appointmentAttend.getAttendanceStatus())) {
+                appointmentList = appointmentRepository.findByDateRoom(appointmentAttend.getRoomId(),
+                        appointmentAttend.getAppointmentDate());
+            } else if (appointmentAttend.getRoomId() == 0 && !"All".equals(appointmentAttend.getAttendanceStatus())) {
+                appointmentList = appointmentRepository.findByDateStatus(appointmentAttend.getAttendanceStatus(),
+                        appointmentAttend.getAppointmentDate());
+            } else {
+                appointmentList = appointmentRepository.findByDateStatusRoom(appointmentAttend.getRoomId(),
+                        appointmentAttend.getAttendanceStatus(), appointmentAttend.getAppointmentDate());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.buildError(CodeMsg.DATA_QUERY_ERROR);
+        }
+        return Result.buildSuccess(appointmentList);
     }
 }

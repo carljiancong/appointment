@@ -1,6 +1,7 @@
 package com.harmonycloud.dto;
 
 import com.harmonycloud.bo.AppointmentQuotaBo;
+import com.harmonycloud.entity.AppointmentQuota;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -14,15 +15,15 @@ import java.io.Serializable;
 public class AppointmentQuotaDto implements Serializable {
     private static final long serialVersionUID = 1L;
     @ApiModelProperty()
-    private AppointmentQuotaBo appointmentQuotaBo;
+    private AppointmentQuota appointmentQuota;
     @ApiModelProperty()
     private boolean isHolidayDate;
 
     public AppointmentQuotaDto() {
     }
 
-    public AppointmentQuotaDto(AppointmentQuotaBo appointmentQuotaBo, boolean isHolidayDate) {
-        this.appointmentQuotaBo = appointmentQuotaBo;
+    public AppointmentQuotaDto(AppointmentQuota appointmentQuota, boolean isHolidayDate) {
+        this.appointmentQuota = appointmentQuota;
         this.isHolidayDate = isHolidayDate;
     }
 
@@ -30,12 +31,12 @@ public class AppointmentQuotaDto implements Serializable {
         return serialVersionUID;
     }
 
-    public AppointmentQuotaBo getAppointmentQuotaBo() {
-        return appointmentQuotaBo;
+    public AppointmentQuota getAppointmentQuota() {
+        return appointmentQuota;
     }
 
-    public void setAppointmentQuotaBo(AppointmentQuotaBo appointmentQuotaBo) {
-        this.appointmentQuotaBo = appointmentQuotaBo;
+    public void setAppointmentQuota(AppointmentQuota appointmentQuota) {
+        this.appointmentQuota = appointmentQuota;
     }
 
     public boolean isHolidayDate() {

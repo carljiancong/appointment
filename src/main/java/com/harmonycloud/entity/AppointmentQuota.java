@@ -80,13 +80,7 @@ public class AppointmentQuota {
         this.roomId = roomId;
     }
 
-    public String getDate() {
-        return appointmentDate;
-    }
 
-    public void setDate(String appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
 
     public Integer getQuota() {
         return quota;
