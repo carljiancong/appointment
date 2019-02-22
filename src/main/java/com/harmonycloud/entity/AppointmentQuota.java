@@ -1,9 +1,6 @@
 package com.harmonycloud.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
@@ -14,6 +11,7 @@ import javax.persistence.Table;
 @Table(name = "Appoinment_quota")
 public class AppointmentQuota {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer appointmentQuotaId;
     @Column(name = "clinic_id")
     private Integer clinicId;

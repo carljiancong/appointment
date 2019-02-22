@@ -1,9 +1,6 @@
 package com.harmonycloud.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -14,6 +11,7 @@ import java.util.Date;
 @Table(name = "encounter")
 public class Encounter {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer encounterId;
     @Column(name = "patient_id")
     private Integer patientId;
@@ -24,7 +22,7 @@ public class Encounter {
     @Column(name = "room_id")
     private Integer roomId;
     @Column(name = "date_time")
-    private Date dateTime;
+    private String dateTime;
     @Column(name = "appointment_id")
     private Integer appointmentId;
     public Encounter() {
@@ -46,9 +44,8 @@ public class Encounter {
         this.appointmentId = appointmentId;
     }
 
-    public Encounter(Integer encounterId, Integer patientId, Integer encounterTypeId,
-                     Integer clinicId, Integer roomId, Date dateTime, Integer appointmentId) {
-        this.encounterId = encounterId;
+    public Encounter(Integer patientId, Integer encounterTypeId,
+                     Integer clinicId, Integer roomId, String dateTime, Integer appointmentId) {
         this.patientId = patientId;
         this.encounterTypeId = encounterTypeId;
         this.clinicId = clinicId;
@@ -97,11 +94,19 @@ public class Encounter {
         this.roomId = roomId;
     }
 
-    public Date getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public Integer getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(Integer appointmentId) {
+        this.appointmentId = appointmentId;
     }
 }

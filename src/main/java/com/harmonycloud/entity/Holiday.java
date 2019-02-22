@@ -1,9 +1,6 @@
 package com.harmonycloud.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -14,6 +11,7 @@ import java.io.Serializable;
 @Table(name = "holiday")
 public class Holiday implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer holidayId;
     @Column(name = "holiday_date")
     private String holidayDate;

@@ -17,34 +17,44 @@ import java.util.Date;
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @ApiModelProperty(name = "预约id",example = "1")
+    @ApiModelProperty(name = "预约id", example = "1")
     private Integer appointmentId;
     @Column(name = "patient_id")
-    @ApiModelProperty(name = "病患id",example = "1")
+    @ApiModelProperty(name = "病患id", example = "1")
     private Integer patientId;
     @Column(name = "clinic_id")
-    @ApiModelProperty(name = "诊所id",example = "1")
+    @ApiModelProperty(name = "诊所id", example = "1")
     private Integer clinicId;
     @Column(name = "encounter_type_id")
-    @ApiModelProperty(name = "会诊类型id",example = "1")
+    @ApiModelProperty(name = "会诊类型id", example = "1")
     private Integer encounterTypeId;
     @Column(name = "room_id")
-    @ApiModelProperty(name = "诊室id",example = "1")
+    @ApiModelProperty(name = "诊室id", example = "1")
     private Integer roomId;
     @Column(name = "appointment_date")
-    @ApiModelProperty(name = "预约日期id",example = "02-Jan-2019")
+    @ApiModelProperty(name = "预约日期id", example = "02-Jan-2019")
     private String appointmentDate;
     @Column(name = "status")
-    @ApiModelProperty(name = "预约能否到达",example = "1")
+    @ApiModelProperty(name = "预约能否到达", example = "1")
     private String status;
     @Column(name = "attendance_status")
-    @ApiModelProperty(name = "是否能到达",example = "1")
+    @ApiModelProperty(name = "是否能到达", example = "1")
     private String attendanceStatus;
     @Column(name = "attendance_time")
-    @ApiModelProperty(name = "到达",example = "2019-02-20 11:11:39")
-    private Date attendanceTime;
+    @ApiModelProperty(name = "到达", example = "2019-02-20 11:11:39")
+    private String attendanceTime;
 
-    public Appointment(){
+    public Appointment() {
+    }
+
+    public void update(String status) throws Exception {
+        if (status.equals("Attend")) {
+            if (this.attendanceStatus.equals("Not Attend")) {
+                this.attendanceStatus = status;
+            } else {
+                throw new Exception("Illegal");
+            }
+        }
     }
 
     public Appointment(Integer patientId, Integer clinicId,
@@ -57,11 +67,11 @@ public class Appointment {
         this.attendanceStatus = attendanceStatus;
     }
 
-    public Integer getId() {
+    public Integer getAppointmentId() {
         return appointmentId;
     }
 
-    public void setId(Integer appointmentId) {
+    public void setAppointmentId(Integer appointmentId) {
         this.appointmentId = appointmentId;
     }
 
@@ -97,11 +107,11 @@ public class Appointment {
         this.roomId = roomId;
     }
 
-    public String getDate() {
+    public String getAppointmentDate() {
         return appointmentDate;
     }
 
-    public void setDate(String appointmentDate) {
+    public void setAppointmentDate(String appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
@@ -121,11 +131,11 @@ public class Appointment {
         this.attendanceStatus = attendanceStatus;
     }
 
-    public Date getAttendanceTime() {
+    public String getAttendanceTime() {
         return attendanceTime;
     }
 
-    public void setAttendanceTime(Date attendanceTime) {
+    public void setAttendanceTime(String attendanceTime) {
         this.attendanceTime = attendanceTime;
     }
 }
