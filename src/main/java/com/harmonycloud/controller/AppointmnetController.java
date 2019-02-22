@@ -3,22 +3,15 @@ package com.harmonycloud.controller;
 import com.harmonycloud.bo.AppointmentAttend;
 import com.harmonycloud.bo.AppointmentBo;
 import com.harmonycloud.bo.AppointmentByMonth;
-import com.harmonycloud.entity.Holiday;
 import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
 import com.harmonycloud.service.AppointmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @Api(tags = {"Appointment"})
 @RestController
@@ -30,11 +23,11 @@ public class AppointmnetController {
     @ApiOperation(value = "patient appointment list")
     @ApiImplicitParam(name = "patientId", value = "patientId", required = true, dataType = "Integer")
     @PostMapping("/appointmentList")
-    public Result getAppointmentList(@RequestBody Integer patientId) {
+    public Result getAppointmentHistory(@RequestBody Integer patientId) {
         if (patientId <= 0) {
             return Result.buildError(CodeMsg.PARAMETER_ERROR);
         }
-        return appointmentService.getAppointmentList(patientId);
+        return appointmentService.getAppointmentHistory(patientId);
     }
 
     @ApiOperation(value = "quota list")
@@ -48,22 +41,38 @@ public class AppointmnetController {
         return appointmentService.getQuotaList(appointmentByMonth);
     }
 
-    @ApiOperation(value = "Book Appointment")
-    @ApiImplicitParam(name = "appointmentBo",value = "appointment message",dataType = "AppointmentBo")
-    @PostMapping("/book")
-    public Result bookAppointment(@RequestBody AppointmentBo appointmentBo){
-        return appointmentService.bookAppointment(appointmentBo);
-    }
-
-
-    @ApiOperation(value = "attend list")
+    @ApiOperation(value = "appointment list by special day")
     @ApiImplicitParam(name = "AppointmentAttend",value = "appointment attend",dataType = "AppointmentAttend")
-    @PostMapping("/attendList")
-    public Result getAttendList(@RequestBody AppointmentAttend appointmentAttend)  {
+    @PostMapping("/appointmentlist")
+    public Result getAppointmentList(@RequestBody AppointmentAttend appointmentAttend)  {
         if (appointmentAttend.getAppointmentDate() == null || appointmentAttend.getAttendanceStatus() == null
                              || appointmentAttend.getRoomId() == null) {
             return Result.buildError(CodeMsg.PARAMETER_ERROR);
         }
-        return appointmentService.getAttendList(appointmentAttend);
+        return appointmentService.getAppointmentList(appointmentAttend);
     }
+
+    @PostMapping("/book")
+    @ApiOperation(value = "Book Appointment")
+    @ApiImplicitParam(name = "appointmentBo", value = "预约信息", dataType = "AppointmentBo")
+    public Result bookAppointment(@RequestBody AppointmentBo appointmentBo) {
+        return appointmentService.bookAppointment(appointmentBo);
+    }
+
+    @GetMapping("/isduplicated")
+    @ApiOperation(value = "isduplicated", httpMethod = "GET")
+    @ApiImplicitParam()
+    public Result isDuplicated(@RequestParam("patientId") Integer patientId,
+                               @RequestParam("encounterTypeId") Integer typeId,
+                               @RequestParam("roomId") Integer roomId) {
+        return appointmentService.isDuplicated(patientId, typeId, roomId);
+    }
+
+    @GetMapping("/attend")
+    @ApiOperation(value = "Mark The Attendance", httpMethod = "GET")
+    @ApiImplicitParam(name = "id", value = "AppointmentId", paramType = "param", dataType = "Integer")
+    public Result bookAppointment(@RequestParam("id") Integer id) {
+        return appointmentService.markAttendence(id);
+    }
+
 }
