@@ -47,17 +47,18 @@ public class AppointmentService {
             Set<String> holidayDateSet = holidayService.getHolidayDate();
 
             //获取该年月下的所有预约额度
-            List<AppointmentQuota> appointmentQuotaBoList = appointmentQuotaService.getAppointmentQuotaList(appointmentByMonth);
+            List<AppointmentQuota> appointmentQuotaList = appointmentQuotaService.getAppointmentQuotaList(appointmentByMonth);
 
             List<AppointmentQuotaDto> appointmentQuotaDtoList = new ArrayList<>();
-            for (AppointmentQuota aqb: appointmentQuotaBoList) {
+            for (AppointmentQuota aq: appointmentQuotaList) {
                 AppointmentQuotaDto appointmentQuotaDto = new AppointmentQuotaDto();
-                appointmentQuotaDto.setAppointmentQuota(aqb);
-                if (holidayDateSet.contains(aqb.getAppointmentDate())) {
+                appointmentQuotaDto.setAppointmentQuota(aq);
+                if (holidayDateSet.contains(aq.getAppointmentDate())) {
                     appointmentQuotaDto.setHolidayDate(true);
                 } else {
                     appointmentQuotaDto.setHolidayDate(false);
                 }
+                appointmentQuotaDtoList.add(appointmentQuotaDto);
             }
             return Result.buildSuccess(appointmentQuotaDtoList);
         }catch (Exception e){
@@ -67,7 +68,7 @@ public class AppointmentService {
     }
 
 
-    public Result getAppointmentList(Integer patientId) {
+    public Result getAppointmentHistory(Integer patientId) {
         List<Appointment> appoinmentDtoList = null;
         try {
             appoinmentDtoList = appointmentRepository.findByPatientId(patientId);
@@ -135,19 +136,19 @@ public class AppointmentService {
     }
 
 
-    public Result getAttendList(AppointmentAttend appointmentAttend) {
+    public Result getAppointmentList(AppointmentAttend appointmentAttend) {
         List<Appointment> appointmentList = null;
         try {
             if (appointmentAttend.getRoomId() == 0 && "All".equals(appointmentAttend.getAttendanceStatus())) {
-                appointmentList = appointmentRepository.findByDate(appointmentAttend.getAppointmentDate());
+                appointmentList = appointmentRepository.findByAppointmentDateContaining(appointmentAttend.getAppointmentDate());
             } else if (appointmentAttend.getRoomId() != 0 && "All".equals(appointmentAttend.getAttendanceStatus())) {
-                appointmentList = appointmentRepository.findByDateRoom(appointmentAttend.getRoomId(),
+                appointmentList = appointmentRepository.findByRoomIdAndAppointmentDateContaining(appointmentAttend.getRoomId(),
                         appointmentAttend.getAppointmentDate());
             } else if (appointmentAttend.getRoomId() == 0 && !"All".equals(appointmentAttend.getAttendanceStatus())) {
-                appointmentList = appointmentRepository.findByDateStatus(appointmentAttend.getAttendanceStatus(),
+                appointmentList = appointmentRepository.findByAttendanceStatusAndAppointmentDateContaining(appointmentAttend.getAttendanceStatus(),
                         appointmentAttend.getAppointmentDate());
             } else {
-                appointmentList = appointmentRepository.findByDateStatusRoom(appointmentAttend.getRoomId(),
+                appointmentList = appointmentRepository.findByRoomIdAndAttendanceStatusAndAppointmentDateContaining(appointmentAttend.getRoomId(),
                         appointmentAttend.getAttendanceStatus(), appointmentAttend.getAppointmentDate());
             }
         } catch (Exception e) {

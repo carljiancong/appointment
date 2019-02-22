@@ -22,7 +22,7 @@ public class AppointmentQuotaService {
     public List<AppointmentQuota> getAppointmentQuotaList(AppointmentByMonth appointmentByMonth) {
         List<AppointmentQuota> appointmentQuotaList = null;
         try {
-            appointmentQuotaList = appointmentQuotaRepository.findByMonthYearLike(
+            appointmentQuotaList = appointmentQuotaRepository.findByClinicIdAndEncounterTypeIdAndRoomIdAndAppointmentDateContaining(
                     appointmentByMonth.getClinicId(),appointmentByMonth.getEncounterTypeId(),
                     appointmentByMonth.getRoomId(), appointmentByMonth.getMonthYear()
             );
