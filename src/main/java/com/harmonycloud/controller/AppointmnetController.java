@@ -37,16 +37,16 @@ public class AppointmnetController {
         return appointmentService.getAppointmentList(patientId);
     }
 
-//    @ApiOperation(value = "获取某一个月的预约额度列表")
-//    @ApiImplicitParam(name = "appointmentByMonth", value = "月份", required = true, dataType = "AppointmentByMonth")
-//    @GetMapping("/quotaList")
-//    public Result getQuotaList(@RequestBody AppointmentByMonth appointmentByMonth) {
-//        if (appointmentByMonth.getClinicId() == null || appointmentByMonth.getEncounterTypeId() == null ||
-//            appointmentByMonth.getRoomId() == null) {
-//            return Result.buildError(CodeMsg.PARAMETER_ERROR);
-//        }
-//        return appointmentService.getQuotaList(appointmentByMonth);
-//    }
+    @ApiOperation(value = "获取某一个月的预约额度列表")
+    @ApiImplicitParam(name = "appointmentByMonth", value = "月份", required = true, dataType = "AppointmentByMonth")
+    @GetMapping("/quotaList")
+    public Result getQuotaList(@RequestBody AppointmentByMonth appointmentByMonth) {
+        if (appointmentByMonth.getClinicId() == null || appointmentByMonth.getEncounterTypeId() == null ||
+            appointmentByMonth.getRoomId() == null) {
+            return Result.buildError(CodeMsg.PARAMETER_ERROR);
+        }
+        return appointmentService.getQuotaList(appointmentByMonth);
+    }
 
     @ApiOperation(value = "Book Appointment")
     @ApiImplicitParam(name = "appointmentBo",value = "预约信息",dataType = "AppointmentBo")
