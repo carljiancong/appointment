@@ -68,7 +68,7 @@ public class AppointmentService {
             for (int i = 0; i < appointments.size(); i++) {
                 Date appointmentTime = sdf.parse(appointments.get(i).getAppointmentDate());
                 int flag = appointmentTime.compareTo(nowtime);
-                if (flag > 0) {
+                if (flag >= 0) {
                     return Result.buildError(CodeMsg.DUPLICATED_BOOKING);
                 }
             }
