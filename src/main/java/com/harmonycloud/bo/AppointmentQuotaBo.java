@@ -1,5 +1,6 @@
 package com.harmonycloud.bo;
 
+import com.harmonycloud.entity.AppointmentQuota;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -7,41 +8,26 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.List;
 
 
-/**
- * @author qidong
- * @String 2019/2/21
- */
-@ApiModel
 public class AppointmentQuotaBo {
-    @ApiModelProperty(name = "预约id", example = "1")
     private Integer appointmentQuotaId;
-    @ApiModelProperty(name = "诊断id", example = "1")
     private Integer clinicId;
-    @ApiModelProperty(name = "会诊类型id", example = "1")
     private Integer encounterTypeId;
-    @ApiModelProperty(name = "诊室id", example = "1")
-    private Integer roomId;
-    @ApiModelProperty(name = "预约时间", example = "01-Jan-2019")
     private String appointmentDate;
-    @ApiModelProperty(name = "人数额度", example = "10")
     private Integer quota;
-    @ApiModelProperty(name = "已经预定额度", example = "1")
-    private Integer quotaBooked;
+    private boolean isHoliday;
 
-    public AppointmentQuotaBo() {
-    }
+    public AppointmentQuotaBo() { }
 
-    public AppointmentQuotaBo(Integer appointmentQuotaId, Integer clinicId, Integer encounterTypeId,
-                              Integer roomId, String appointmentDate, Integer quota, Integer quotaBooked) {
+    public AppointmentQuotaBo(Integer appointmentQuotaId, Integer clinicId, Integer encounterTypeId, String appointmentDate, Integer quota, boolean isHoliday) {
         this.appointmentQuotaId = appointmentQuotaId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
-        this.roomId = roomId;
         this.appointmentDate = appointmentDate;
         this.quota = quota;
-        this.quotaBooked = quotaBooked;
+        this.isHoliday = isHoliday;
     }
 
     public Integer getAppointmentQuotaId() {
@@ -50,14 +36,6 @@ public class AppointmentQuotaBo {
 
     public void setAppointmentQuotaId(Integer appointmentQuotaId) {
         this.appointmentQuotaId = appointmentQuotaId;
-    }
-
-    public String getAppointmentDate() {
-        return appointmentDate;
-    }
-
-    public void setAppointmentDate(String appointmentDate) {
-        this.appointmentDate = appointmentDate;
     }
 
     public Integer getClinicId() {
@@ -76,19 +54,11 @@ public class AppointmentQuotaBo {
         this.encounterTypeId = encounterTypeId;
     }
 
-    public Integer getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
-    }
-
-    public String getDate() {
+    public String getAppointmentDate() {
         return appointmentDate;
     }
 
-    public void setDate(String appointmentDate) {
+    public void setAppointmentDate(String appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
@@ -100,11 +70,13 @@ public class AppointmentQuotaBo {
         this.quota = quota;
     }
 
-    public Integer getQuotaBooked() {
-        return quotaBooked;
+    public boolean isHoliday() {
+        return isHoliday;
     }
 
-    public void setQuotaBooked(Integer quotaBooked) {
-        this.quotaBooked = quotaBooked;
+    public void setHoliday(boolean holiday) {
+        isHoliday = holiday;
     }
 }
+
+

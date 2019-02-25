@@ -1,95 +1,57 @@
 package com.harmonycloud.service;
 
-import com.harmonycloud.bo.AppointmentAttend;
-import com.harmonycloud.bo.AppointmentBo;
-import com.harmonycloud.bo.AppointmentByMonth;
-import com.harmonycloud.bo.AppointmentQuotaBo;
-import com.harmonycloud.dto.AppointmentQuotaDto;
 import com.harmonycloud.entity.Appointment;
-import com.harmonycloud.entity.AppointmentQuota;
 import com.harmonycloud.entity.Encounter;
 import com.harmonycloud.repository.AppointmentRepository;
 import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
-import org.aspectj.apache.bcel.classfile.Code;
+import com.harmonycloud.vo.AppointmentAttend;
+import com.harmonycloud.vo.AppointmentVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class AppointmentService {
-    private static final Logger logger = LoggerFactory.getLogger(AppointmentService.class);
-//    private JwtUtil jwtUtil = new JwtUtil();
+    private  Logger logger = LoggerFactory.getLogger(AppointmentService.class);
 
-    @Resource
+    @Autowired
     private AppointmentRepository appointmentRepository;
 
-    @Resource
-    private AppointmentQuotaService appointmentQuotaService;
 
-    @Resource
+    @Autowired
     private EncouterService encouterService;
-
-    @Resource
-    private HolidayService holidayService;
-
-    public Result getQuotaList(AppointmentByMonth appointmentByMonth) {
-        try{
-            //获取该年月下的所有假期，并放入set集合中
-            Set<String> holidayDateSet = holidayService.getHolidayDate();
-
-            //获取该年月下的所有预约额度
-            List<AppointmentQuota> appointmentQuotaList = appointmentQuotaService.getAppointmentQuotaList(appointmentByMonth);
-
-            List<AppointmentQuotaDto> appointmentQuotaDtoList = new ArrayList<>();
-            for (AppointmentQuota aq: appointmentQuotaList) {
-                AppointmentQuotaDto appointmentQuotaDto = new AppointmentQuotaDto();
-                appointmentQuotaDto.setAppointmentQuota(aq);
-                if (holidayDateSet.contains(aq.getAppointmentDate())) {
-                    appointmentQuotaDto.setHolidayDate(true);
-                } else {
-                    appointmentQuotaDto.setHolidayDate(false);
-                }
-                appointmentQuotaDtoList.add(appointmentQuotaDto);
-            }
-            return Result.buildSuccess(appointmentQuotaDtoList);
-        }catch (Exception e){
-            e.printStackTrace();
-            return Result.buildError(CodeMsg.DATA_QUERY_ERROR);
-        }
-    }
 
 
     public Result getAppointmentHistory(Integer patientId) {
-        List<Appointment> appoinmentDtoList = null;
+        List<Appointment> appoinmentList = null;
         try {
-            appoinmentDtoList = appointmentRepository.findByPatientId(patientId);
-            if (appoinmentDtoList.size() == 0 || appoinmentDtoList == null) {
-                return Result.buildError(CodeMsg.PATIENT_NOT_EXIST);
-            }
+            appoinmentList = appointmentRepository.findByPatientId(patientId);
+
         } catch (Exception e) {
             logger.info(e.getMessage());
             return Result.buildError(CodeMsg.DATA_QUERY_ERROR);
         }
-        return Result.buildSuccess(appoinmentDtoList);
+        return Result.buildSuccess(appoinmentList);
     }
 
-    public Result bookAppointment(AppointmentBo appointmentBo) {
+    public Result bookAppointment(AppointmentVo appointmentBo) {
         try {
             Integer patientId = appointmentBo.getPatientId();
             Integer clinicId = appointmentBo.getClinicId();
             Integer typeId = appointmentBo.getEncounterTypeId();
             Integer roomId = appointmentBo.getRoomId();
             String date = appointmentBo.getDate();
-            Appointment appointment = new Appointment(patientId, clinicId, typeId, roomId, date, "Not Attend");
+            String patientDoc = appointmentBo.getPatientDoc();
+            String patientName=appointmentBo.getPatientName();
+            String encounterTypeName = appointmentBo.getEncounterTypeName();
+            String roomName=appointmentBo.getRoomName();
+            Appointment appointment = new Appointment(patientId, clinicId, typeId, roomId, date, "Not Attend",patientDoc,patientName,encounterTypeName,roomName);
             appointmentRepository.save(appointment);
             return Result.buildSuccess(appointment);
         } catch (Exception e) {
@@ -118,14 +80,14 @@ public class AppointmentService {
     }
 
     public Result markAttendence(Integer appointmentId) {
-        DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm",Locale.ENGLISH);
+        DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.ENGLISH);
         try {
             Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
             appointment.get().update("Attend");
             Date date = new Date();
             appointment.get().setAttendanceTime(sdf.format(date));
             appointmentRepository.save(appointment.get());
-            Encounter encounter = new Encounter(appointment.get().getPatientId(),appointment.get().getEncounterTypeId(),appointment.get().getClinicId(),appointment.get().getRoomId(),sdf.format(date),appointmentId);
+            Encounter encounter = new Encounter(appointment.get().getPatientId(), appointment.get().getEncounterTypeId(), appointment.get().getClinicId(), appointment.get().getRoomId(), sdf.format(date), appointmentId);
             encouterService.save(encounter);
             return Result.buildSuccess(encounter);
         } catch (Exception e) {
@@ -157,4 +119,6 @@ public class AppointmentService {
         }
         return Result.buildSuccess(appointmentList);
     }
+
+
 }

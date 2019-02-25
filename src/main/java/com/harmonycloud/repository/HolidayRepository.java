@@ -10,11 +10,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface HolidayRepository extends JpaRepository<Holiday,Integer> {
-
-    @Modifying
-    @Query("select new com.harmonycloud.entity.Holiday(h.holidayDate) from Holiday h where h.holidayDate = ?1")
-    List<Holiday> findByMonthYear(String monthYear);
-
-
+public interface HolidayRepository extends JpaRepository<Holiday, Integer> {
 }

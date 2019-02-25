@@ -1,5 +1,8 @@
 package com.harmonycloud.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 
@@ -9,21 +12,29 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "Appoinment_quota")
+@ApiModel
 public class AppointmentQuota {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @ApiModelProperty(name = "预约id", example = "1")
     private Integer appointmentQuotaId;
+    @ApiModelProperty(name = "诊断id", example = "1")
     @Column(name = "clinic_id")
     private Integer clinicId;
     @Column(name = "encounter_type_id")
+    @ApiModelProperty(name = "会诊类型id", example = "1")
     private Integer encounterTypeId;
     @Column(name = "room_id")
+    @ApiModelProperty(name = "诊室id", example = "1")
     private Integer roomId;
     @Column(name = "appointment_date")
+    @ApiModelProperty(name = "预约时间", example = "01-Jan-2019")
     private String appointmentDate;
     @Column(name = "quota")
+    @ApiModelProperty(name = "人数额度", example = "10")
     private Integer quota;
     @Column(name = "quota_booked")
+    @ApiModelProperty(name = "已经预定额度", example = "1")
     private Integer quotaBooked;
 
     public AppointmentQuota() {
@@ -79,7 +90,6 @@ public class AppointmentQuota {
     public void setRoomId(Integer roomId) {
         this.roomId = roomId;
     }
-
 
 
     public Integer getQuota() {

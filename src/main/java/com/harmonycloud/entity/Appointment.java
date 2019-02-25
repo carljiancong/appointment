@@ -1,7 +1,9 @@
 package com.harmonycloud.entity;
 
+import com.fasterxml.classmate.GenericType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,21 +18,34 @@ import java.util.Date;
 @ApiModel
 public class Appointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "appointmentSeq", sequenceName = "APPOINTMENT_SEQUENCE")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appointmentSeq")
     @ApiModelProperty(name = "预约id", example = "1")
     private Integer appointmentId;
     @Column(name = "patient_id")
     @ApiModelProperty(name = "病患id", example = "1")
     private Integer patientId;
+    @Column(name = "patient_doc")
+    @ApiModelProperty(name = "病患证件号码", example = "TM002")
+    private String patientDoc;
+    @Column(name = "patient_name")
+    @ApiModelProperty(name = "病患英文名", example = "yu,vicky")
+    private String patientName;
     @Column(name = "clinic_id")
     @ApiModelProperty(name = "诊所id", example = "1")
     private Integer clinicId;
     @Column(name = "encounter_type_id")
     @ApiModelProperty(name = "会诊类型id", example = "1")
     private Integer encounterTypeId;
+    @Column(name = "encounter_type_name")
+    @ApiModelProperty(name = "会诊类型名称", example = "encountertypetest")
+    private String encounterTypeName;
     @Column(name = "room_id")
     @ApiModelProperty(name = "诊室id", example = "1")
     private Integer roomId;
+    @Column(name = "room_name")
+    @ApiModelProperty(name = "诊室名称", example = "1")
+    private String roomName;
     @Column(name = "appointment_date")
     @ApiModelProperty(name = "预约日期id", example = "02-Jan-2019")
     private String appointmentDate;
@@ -58,13 +73,18 @@ public class Appointment {
     }
 
     public Appointment(Integer patientId, Integer clinicId,
-                       Integer encounterTypeId, Integer roomId, String appointmentDate, String attendanceStatus) {
+                       Integer encounterTypeId, Integer roomId, String appointmentDate, String attendanceStatus,
+                       String patientDoc, String patientName, String encounterTypeName, String roomName) {
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
         this.roomId = roomId;
         this.appointmentDate = appointmentDate;
         this.attendanceStatus = attendanceStatus;
+        this.patientDoc = patientDoc;
+        this.patientName = patientName;
+        this.encounterTypeName = encounterTypeName;
+        this.roomName = roomName;
     }
 
     public Appointment(Integer appointmentId, Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, String appointmentDate,
@@ -150,5 +170,37 @@ public class Appointment {
 
     public void setAttendanceTime(String attendanceTime) {
         this.attendanceTime = attendanceTime;
+    }
+
+    public String getPatientDoc() {
+        return patientDoc;
+    }
+
+    public void setPatientDoc(String patientDoc) {
+        this.patientDoc = patientDoc;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public String getEncounterTypeName() {
+        return encounterTypeName;
+    }
+
+    public void setEncounterTypeName(String encounterTypeName) {
+        this.encounterTypeName = encounterTypeName;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 }

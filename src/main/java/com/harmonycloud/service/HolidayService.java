@@ -2,12 +2,10 @@ package com.harmonycloud.service;
 
 import com.harmonycloud.entity.Holiday;
 import com.harmonycloud.repository.HolidayRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +21,7 @@ public class HolidayService {
     @Resource
     private HolidayRepository holidayRepository;
 
-    //@Cacheable(value = "holiday", unless = "#result == null")
+    @Cacheable(value = "holiday", unless = "#result == null")
     public Set<String> getHolidayDate() {
         List<Holiday> holidayList = null;
         Set<String> holidayDateSet = new HashSet<>();
@@ -38,6 +36,5 @@ public class HolidayService {
         }
         return holidayDateSet;
     }
-
 
 }
