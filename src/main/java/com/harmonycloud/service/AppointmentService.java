@@ -18,7 +18,7 @@ import java.util.*;
 
 @Service
 public class AppointmentService {
-    private  Logger logger = LoggerFactory.getLogger(AppointmentService.class);
+    private Logger logger = LoggerFactory.getLogger(AppointmentService.class);
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -32,7 +32,6 @@ public class AppointmentService {
         List<Appointment> appoinmentList = null;
         try {
             appoinmentList = appointmentRepository.findByPatientId(patientId);
-
         } catch (Exception e) {
             logger.info(e.getMessage());
             return Result.buildError(CodeMsg.DATA_QUERY_ERROR);
@@ -40,18 +39,19 @@ public class AppointmentService {
         return Result.buildSuccess(appoinmentList);
     }
 
-    public Result bookAppointment(AppointmentVo appointmentBo) {
+    public Result bookAppointment(AppointmentVo appointmentVo) {
         try {
-            Integer patientId = appointmentBo.getPatientId();
-            Integer clinicId = appointmentBo.getClinicId();
-            Integer typeId = appointmentBo.getEncounterTypeId();
-            Integer roomId = appointmentBo.getRoomId();
-            String date = appointmentBo.getDate();
-            String patientDoc = appointmentBo.getPatientDoc();
-            String patientName=appointmentBo.getPatientName();
-            String encounterTypeName = appointmentBo.getEncounterTypeName();
-            String roomName=appointmentBo.getRoomName();
-            Appointment appointment = new Appointment(patientId, clinicId, typeId, roomId, date, "Not Attend",patientDoc,patientName,encounterTypeName,roomName);
+            Integer patientId = appointmentVo.getPatientId();
+            Integer clinicId = appointmentVo.getClinicId();
+            Integer typeId = appointmentVo.getEncounterTypeId();
+            Integer roomId = appointmentVo.getRoomId();
+            String date = appointmentVo.getDate();
+            String patientDoc = appointmentVo.getPatientDoc();
+            String patientName = appointmentVo.getPatientName();
+            String encounterTypeName = appointmentVo.getEncounterTypeName();
+            String roomName = appointmentVo.getRoomName();
+            String clinicName = appointmentVo.getClinicName();
+            Appointment appointment = new Appointment(patientId, clinicId, typeId, roomId, date, "Not Attend", patientDoc, patientName, encounterTypeName, roomName, clinicName);
             appointmentRepository.save(appointment);
             return Result.buildSuccess(appointment);
         } catch (Exception e) {

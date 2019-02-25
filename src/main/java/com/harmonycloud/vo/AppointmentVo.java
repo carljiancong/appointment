@@ -10,11 +10,11 @@ public class AppointmentVo {
     private  String patientDoc;
     private String encounterTypeName;
     private String roomName;
-
+    private String clinicName;
     public AppointmentVo() {
     }
 
-    public AppointmentVo(Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, String date, String patientName, String patientDoc, String encounterTypeName, String roomName) {
+    public AppointmentVo(Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, String date, String patientName, String patientDoc, String encounterTypeName, String roomName,String clinicName) {
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
@@ -24,6 +24,7 @@ public class AppointmentVo {
         this.patientDoc = patientDoc;
         this.encounterTypeName = encounterTypeName;
         this.roomName = roomName;
+        this.clinicName=clinicName;
     }
 
     public Integer getPatientId() {
@@ -96,5 +97,13 @@ public class AppointmentVo {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public String getClinicName() {
+        return clinicName;
+    }
+
+    public void setClinicName(String clinicName) {
+        this.clinicName = clinicName;
     }
 }

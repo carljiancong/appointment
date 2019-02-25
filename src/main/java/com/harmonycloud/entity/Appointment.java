@@ -34,6 +34,9 @@ public class Appointment {
     @Column(name = "clinic_id")
     @ApiModelProperty(name = "诊所id", example = "1")
     private Integer clinicId;
+    @Column(name = "clinic_name")
+    @ApiModelProperty(name = "诊所名称", example = "1")
+    private String clinicName;
     @Column(name = "encounter_type_id")
     @ApiModelProperty(name = "会诊类型id", example = "1")
     private Integer encounterTypeId;
@@ -74,7 +77,7 @@ public class Appointment {
 
     public Appointment(Integer patientId, Integer clinicId,
                        Integer encounterTypeId, Integer roomId, String appointmentDate, String attendanceStatus,
-                       String patientDoc, String patientName, String encounterTypeName, String roomName) {
+                       String patientDoc, String patientName, String encounterTypeName, String roomName,String clinicName) {
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
@@ -85,6 +88,7 @@ public class Appointment {
         this.patientName = patientName;
         this.encounterTypeName = encounterTypeName;
         this.roomName = roomName;
+        this.clinicName=clinicName;
     }
 
     public Appointment(Integer appointmentId, Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, String appointmentDate,
@@ -202,5 +206,13 @@ public class Appointment {
 
     public void setRoomName(String roomName) {
         this.roomName = roomName;
+    }
+
+    public String getClinicName() {
+        return clinicName;
+    }
+
+    public void setClinicName(String clinicName) {
+        this.clinicName = clinicName;
     }
 }
