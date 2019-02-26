@@ -65,4 +65,13 @@ public class AppointmentQuotaService {
             return Result.buildError(CodeMsg.SERVICE_ERROR);
         }
     }
+
+    public void updateAppointmentQuotaList(String appointmentData,Integer clinicId,Integer encouterTypdId,Integer roomID){
+        AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByClinicIdAndEncounterTypeIdAndRoomIdAndAppointmentDate(clinicId,encouterTypdId,roomID,appointmentData);
+        int quota = appointmentQuota.getQuota()-1;
+        int booked =appointmentQuota.getQuotaBooked()+1;
+        appointmentQuota.setQuota(quota);
+        appointmentQuota.setQuotaBooked(booked);
+        appointmentQuotaRepository.save(appointmentQuota);
+    }
 }

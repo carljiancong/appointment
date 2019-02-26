@@ -23,9 +23,11 @@ public class AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-
     @Autowired
     private EncouterService encouterService;
+
+    @Autowired
+    private AppointmentQuotaService appointmentQuotaService;
 
 
     public Result getAppointmentHistory(Integer patientId) {
@@ -40,6 +42,7 @@ public class AppointmentService {
     }
 
     public Result bookAppointment(AppointmentVo appointmentVo) {
+        DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
         try {
             Integer patientId = appointmentVo.getPatientId();
             Integer clinicId = appointmentVo.getClinicId();
@@ -53,6 +56,7 @@ public class AppointmentService {
             String clinicName = appointmentVo.getClinicName();
             Appointment appointment = new Appointment(patientId, clinicId, typeId, roomId, date, "Not Attend", patientDoc, patientName, encounterTypeName, roomName, clinicName);
             appointmentRepository.save(appointment);
+            appointmentQuotaService.updateAppointmentQuotaList(sdf.format(sdf.parse(appointment.getAppointmentDate())),clinicId,typeId,roomId);
             return Result.buildSuccess(appointment);
         } catch (Exception e) {
             return Result.buildError(CodeMsg.SERVICE_ERROR);

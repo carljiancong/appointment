@@ -1,6 +1,7 @@
 package com.harmonycloud.repository;
 
 import com.harmonycloud.bo.AppointmentQuotaBo;
+import com.harmonycloud.entity.Appointment;
 import com.harmonycloud.entity.AppointmentQuota;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,5 @@ public interface AppointmentQuotaRepository extends JpaRepository<AppointmentQuo
 
     List<AppointmentQuota> findByClinicIdAndEncounterTypeIdAndAppointmentDateContaining(Integer clinicId, Integer encounterTypeId, String monthYear);
 
+    AppointmentQuota findByClinicIdAndEncounterTypeIdAndRoomIdAndAppointmentDate(Integer clinicId, Integer encounterTypeId,Integer roomId,String appointmentData);
 }
