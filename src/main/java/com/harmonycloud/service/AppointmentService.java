@@ -41,7 +41,7 @@ public class AppointmentService {
         }
         return Result.buildSuccess(appoinmentList);
     }
-    @Transactional
+
     public Result bookAppointment(AppointmentVo appointmentVo) {
         DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
         try {
@@ -57,28 +57,33 @@ public class AppointmentService {
             String clinicName = appointmentVo.getClinicName();
             Appointment appointment = new Appointment(patientId, clinicId, typeId, roomId, date, "Not Attend", patientDoc, patientName, encounterTypeName, roomName, clinicName);
             appointmentRepository.save(appointment);
-            appointmentQuotaService.updateAppointmentQuotaList(sdf.format(sdf.parse(appointment.getAppointmentDate())),clinicId,typeId,roomId);
+            appointmentQuotaService.updateAppointmentQuotaList(sdf.format(sdf.parse(appointment.getAppointmentDate())), clinicId, typeId, roomId);
             return Result.buildSuccess(appointment);
-        }catch (IllegalStateException e){
-            return Result.buildError(CodeMsg.Full);
         } catch (Exception e) {
             return Result.buildError(CodeMsg.SERVICE_ERROR);
         }
     }
 
-    public Result isDuplicated(Integer patientId, Integer typeId, Integer roomId) {
+    public Result isDuplicated(Integer clinicId, Integer patientId, Integer typeId, Integer roomId, String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
         try {
-            List<Appointment> appointments = appointmentRepository.findByPatientIdAndEncounterTypeIdAndRoomIdAndAttendanceStatus(patientId, typeId, roomId, "Not Attend");
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
-            Date nowtime = sdf.parse(sdf.format(new Date()));
-            for (int i = 0; i < appointments.size(); i++) {
-                Date appointmentTime = sdf.parse(appointments.get(i).getAppointmentDate());
-                int flag = appointmentTime.compareTo(nowtime);
-                if (flag >= 0) {
-                    return Result.buildError(CodeMsg.DUPLICATED_BOOKING);
+            Boolean isfull = appointmentQuotaService.isFull(sdf.format(sdf.parse(date)), clinicId, typeId, roomId);
+            if (!isfull) {
+                List<Appointment> appointments = appointmentRepository.findByPatientIdAndEncounterTypeIdAndRoomIdAndAttendanceStatus(patientId, typeId, roomId, "Not Attend");
+                Date nowtime = sdf.parse(sdf.format(new Date()));
+                for (int i = 0; i < appointments.size(); i++) {
+                    Date appointmentTime = sdf.parse(appointments.get(i).getAppointmentDate());
+                    int flag = appointmentTime.compareTo(nowtime);
+                    if (flag >= 0) {
+                        return Result.buildError(CodeMsg.DUPLICATED_BOOKING);
+                    }
                 }
+                return Result.buildSuccess(null);
             }
-            return Result.buildSuccess(null);
+            else {
+                return Result.buildError(CodeMsg.Full);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return Result.buildError(CodeMsg.SERVICE_ERROR);

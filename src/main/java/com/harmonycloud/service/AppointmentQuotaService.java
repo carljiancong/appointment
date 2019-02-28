@@ -67,16 +67,31 @@ public class AppointmentQuotaService {
         }
     }
 
-    public void updateAppointmentQuotaList(String appointmentData, Integer clinicId, Integer encouterTypdId, Integer roomID) {
-        AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByClinicIdAndEncounterTypeIdAndRoomIdAndAppointmentDate(clinicId, encouterTypdId, roomID, appointmentData);
-        if (appointmentQuota.getQuota() > 0) {
-            int quota = appointmentQuota.getQuota() - 1;
-            int booked = appointmentQuota.getQuotaBooked() + 1;
-            appointmentQuota.setQuota(quota);
-            appointmentQuota.setQuotaBooked(booked);
-            appointmentQuotaRepository.save(appointmentQuota);
+    public void updateAppointmentQuotaList(String appointmentDate, Integer clinicId, Integer encouterTypdId, Integer roomID) {
+        AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByClinicIdAndEncounterTypeIdAndRoomIdAndAppointmentDate(clinicId, encouterTypdId, roomID, appointmentDate);
+        int quota = appointmentQuota.getQuota() - 1;
+        int booked = appointmentQuota.getQuotaBooked() + 1;
+        appointmentQuota.setQuota(quota);
+        appointmentQuota.setQuotaBooked(booked);
+        appointmentQuotaRepository.save(appointmentQuota);
+    }
+
+    /**
+     * 判断这一天是否已预约满
+     *
+     * @param appointmentDate
+     * @param clinicId
+     * @param encouterTypdId
+     * @param roomID
+     * @return
+     */
+    public Boolean isFull(String appointmentDate, Integer clinicId, Integer encouterTypdId, Integer roomID) {
+        AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByClinicIdAndEncounterTypeIdAndRoomIdAndAppointmentDate(clinicId, encouterTypdId, roomID, appointmentDate);
+        int quota = appointmentQuota.getQuota();
+        if (quota > 0) {
+            return false;
         } else {
-            throw new IllegalStateException("full");
+            return true;
         }
     }
 }

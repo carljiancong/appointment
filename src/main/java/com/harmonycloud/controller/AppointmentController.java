@@ -29,8 +29,8 @@ public class AppointmentController {
 
 
     @GetMapping("/appointmentHistory")
-    @ApiOperation(value = "patient appointment list",response = Appointment.class)
-    @ApiImplicitParam(name = "patientId", value = "patientId", required = true, paramType = "query",dataType = "Integer")
+    @ApiOperation(value = "patient appointment list", response = Appointment.class)
+    @ApiImplicitParam(name = "patientId", value = "patientId", required = true, paramType = "query", dataType = "Integer")
     public Result getAppointmentHistory(@RequestParam("patientId") Integer patientId) {
         if (patientId <= 0) {
             return Result.buildError(CodeMsg.PARAMETER_ERROR);
@@ -38,7 +38,7 @@ public class AppointmentController {
         return appointmentService.getAppointmentHistory(patientId);
     }
 
-    @ApiOperation(value = "quota list",response = AppointmentQuota.class)
+    @ApiOperation(value = "quota list", response = AppointmentQuota.class)
     @ApiImplicitParam(name = "appointmentByMonth", value = "appointmentByMonth", required = true, dataType = "AppointmentByMonth")
     @PostMapping("/quotaList")
     public Result getQuotaList(@RequestBody AppointmentByMonth appointmentByMonth) {
@@ -48,7 +48,7 @@ public class AppointmentController {
         return appointmentQuotaService.getAppointmentQuotaList(appointmentByMonth);
     }
 
-    @ApiOperation(value = "appointment list by special day",response = Appointment.class)
+    @ApiOperation(value = "appointment list by special day", response = Appointment.class)
     @ApiImplicitParam(name = "appointmentAttend", value = "appointment attend", dataType = "AppointmentAttend")
     @PostMapping("/appointmentlist")
     public Result getAppointmentList(@RequestBody AppointmentAttend appointmentAttend) {
@@ -71,12 +71,16 @@ public class AppointmentController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "patientId", value = "patientId", paramType = "query", dataType = "Integer"),
             @ApiImplicitParam(name = "encounterTypeId", value = "encounterTypeId", paramType = "query", dataType = "Integer"),
-            @ApiImplicitParam(name = "roomId", value = "roomId", paramType = "query", dataType = "Integer")
+            @ApiImplicitParam(name = "roomId", value = "roomId", paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "clinicId", value = "clinicId", paramType = "query", dataType = "Integer"),
+            @ApiImplicitParam(name = "appointmentDate", value = "appointmentDate", paramType = "query", dataType = "String")
     })
     public Result isDuplicated(@RequestParam("patientId") Integer patientId,
                                @RequestParam("encounterTypeId") Integer typeId,
-                               @RequestParam("roomId") Integer roomId) {
-        return appointmentService.isDuplicated(patientId, typeId, roomId);
+                               @RequestParam("roomId") Integer roomId,
+                               @RequestParam("clinicId") Integer clinicId,
+                               @RequestParam("appointmentDate") String date) {
+        return appointmentService.isDuplicated(clinicId, patientId, typeId, roomId, date);
     }
 
     @GetMapping("/attend")
