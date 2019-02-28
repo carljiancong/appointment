@@ -7,6 +7,7 @@ import com.harmonycloud.entity.AppointmentQuota;
 import com.harmonycloud.repository.AppointmentQuotaRepository;
 import com.harmonycloud.result.CodeMsg;
 import com.harmonycloud.result.Result;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -66,12 +67,16 @@ public class AppointmentQuotaService {
         }
     }
 
-    public void updateAppointmentQuotaList(String appointmentData,Integer clinicId,Integer encouterTypdId,Integer roomID){
-        AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByClinicIdAndEncounterTypeIdAndRoomIdAndAppointmentDate(clinicId,encouterTypdId,roomID,appointmentData);
-        int quota = appointmentQuota.getQuota()-1;
-        int booked =appointmentQuota.getQuotaBooked()+1;
-        appointmentQuota.setQuota(quota);
-        appointmentQuota.setQuotaBooked(booked);
-        appointmentQuotaRepository.save(appointmentQuota);
+    public void updateAppointmentQuotaList(String appointmentData, Integer clinicId, Integer encouterTypdId, Integer roomID) {
+        AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByClinicIdAndEncounterTypeIdAndRoomIdAndAppointmentDate(clinicId, encouterTypdId, roomID, appointmentData);
+        if (appointmentQuota.getQuota() > 0) {
+            int quota = appointmentQuota.getQuota() - 1;
+            int booked = appointmentQuota.getQuotaBooked() + 1;
+            appointmentQuota.setQuota(quota);
+            appointmentQuota.setQuotaBooked(booked);
+            appointmentQuotaRepository.save(appointmentQuota);
+        } else {
+            throw new IllegalStateException("full");
+        }
     }
 }

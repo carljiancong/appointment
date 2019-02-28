@@ -20,7 +20,7 @@ public class UserPrincipalFactory {
             authorities.add(new SimpleGrantedAuthority(roles.get(i)));
         }
 
-        String userId = claims.get("userId").toString();
+        Integer userId = Integer.valueOf(claims.get("userId").toString());
         String loginName = claims.get("loginname").toString();
         return new UserPrincipal(userId,loginName,authorities);
     }

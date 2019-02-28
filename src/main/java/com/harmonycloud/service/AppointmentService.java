@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,7 +41,7 @@ public class AppointmentService {
         }
         return Result.buildSuccess(appoinmentList);
     }
-
+    @Transactional
     public Result bookAppointment(AppointmentVo appointmentVo) {
         DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
         try {
@@ -58,10 +59,11 @@ public class AppointmentService {
             appointmentRepository.save(appointment);
             appointmentQuotaService.updateAppointmentQuotaList(sdf.format(sdf.parse(appointment.getAppointmentDate())),clinicId,typeId,roomId);
             return Result.buildSuccess(appointment);
+        }catch (IllegalStateException e){
+            return Result.buildError(CodeMsg.Full);
         } catch (Exception e) {
             return Result.buildError(CodeMsg.SERVICE_ERROR);
         }
-
     }
 
     public Result isDuplicated(Integer patientId, Integer typeId, Integer roomId) {
@@ -123,6 +125,4 @@ public class AppointmentService {
         }
         return Result.buildSuccess(appointmentList);
     }
-
-
 }

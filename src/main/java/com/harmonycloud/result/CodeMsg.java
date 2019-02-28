@@ -14,11 +14,12 @@ public class CodeMsg {
     /**
      * appointment service
      */
-    public static CodeMsg PATIENT_NOT_EXIST = new CodeMsg("Patient is not exist");
+
     public static CodeMsg DATA_QUERY_ERROR = new CodeMsg("Data query error");
     public static CodeMsg SERVICE_ERROR = new CodeMsg("Service error");
     public static CodeMsg PARAMETER_ERROR = new CodeMsg("Parameter error");
     public static CodeMsg DUPLICATED_BOOKING = new CodeMsg("Duplicated booking");
+    public static CodeMsg Full = new CodeMsg("Full booking");
     public String getMsg() {
         return msg;
     }

@@ -49,7 +49,7 @@ public class AppointmentController {
     }
 
     @ApiOperation(value = "appointment list by special day",response = Appointment.class)
-    @ApiImplicitParam(name = "AppointmentAttend", value = "appointment attend", dataType = "AppointmentAttend")
+    @ApiImplicitParam(name = "appointmentAttend", value = "appointment attend", dataType = "AppointmentAttend")
     @PostMapping("/appointmentlist")
     public Result getAppointmentList(@RequestBody AppointmentAttend appointmentAttend) {
         if (appointmentAttend.getAppointmentDate() == null || appointmentAttend.getAttendanceStatus() == null
@@ -61,7 +61,7 @@ public class AppointmentController {
 
     @PostMapping("/book")
     @ApiOperation(value = "Book Appointment")
-    @ApiImplicitParam(name = "appointmentBo", value = "预约信息", dataType = "AppointmentBo")
+    @ApiImplicitParam(name = "appointmentvo", value = "appointmentvo", dataType = "AppointmentVo")
     public Result bookAppointment(@RequestBody AppointmentVo appointmentvo) {
         return appointmentService.bookAppointment(appointmentvo);
     }

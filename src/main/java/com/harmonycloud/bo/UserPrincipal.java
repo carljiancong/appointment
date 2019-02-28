@@ -9,13 +9,13 @@ import java.util.Objects;
 public class UserPrincipal implements UserDetails {
     private static final long serialVersionUID = 1L;
 
-    private String userId;
+    private Integer userId;
 
     private String loginName;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(String userId, String loginName, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Integer userId, String loginName, Collection<? extends GrantedAuthority> authorities) {
         this.userId = userId;
         this.loginName = loginName;
         this.authorities = authorities;
