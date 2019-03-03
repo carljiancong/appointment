@@ -24,8 +24,8 @@ public class AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    @Autowired
-    private EncouterService encouterService;
+//    @Autowired
+//    private EncouterService encouterService;
 
     @Autowired
     private AppointmentQuotaService appointmentQuotaService;
@@ -98,9 +98,7 @@ public class AppointmentService {
             Date date = new Date();
             appointment.get().setAttendanceTime(sdf.format(date));
             appointmentRepository.save(appointment.get());
-            Encounter encounter = new Encounter(appointment.get().getPatientId(), appointment.get().getEncounterTypeId(), appointment.get().getClinicId(), appointment.get().getRoomId(), sdf.format(date), appointmentId);
-            encouterService.save(encounter);
-            return Result.buildSuccess(encounter);
+            return Result.buildSuccess(appointment);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.buildError(CodeMsg.SERVICE_ERROR);
