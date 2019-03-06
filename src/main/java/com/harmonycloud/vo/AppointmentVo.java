@@ -1,20 +1,23 @@
 package com.harmonycloud.vo;
 
+import java.util.Date;
+
 public class AppointmentVo {
     private Integer patientId;
     private Integer clinicId;
     private Integer encounterTypeId;
     private Integer roomId;
-    private String date;
+    private Date date;
     private String patientName;
-    private  String patientDoc;
+    private String patientDoc;
     private String encounterTypeName;
     private String roomName;
     private String clinicName;
+
     public AppointmentVo() {
     }
 
-    public AppointmentVo(Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, String date, String patientName, String patientDoc, String encounterTypeName, String roomName,String clinicName) {
+    public AppointmentVo(Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, Date date, String patientName, String patientDoc, String encounterTypeName, String roomName, String clinicName) {
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
@@ -24,7 +27,7 @@ public class AppointmentVo {
         this.patientDoc = patientDoc;
         this.encounterTypeName = encounterTypeName;
         this.roomName = roomName;
-        this.clinicName=clinicName;
+        this.clinicName = clinicName;
     }
 
     public Integer getPatientId() {
@@ -59,11 +62,11 @@ public class AppointmentVo {
         this.roomId = roomId;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

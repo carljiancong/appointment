@@ -1,13 +1,15 @@
 package com.harmonycloud.vo;
 
 
+import java.util.Date;
+
 public class AppointmentByMonth {
     private Integer clinicId;
     private Integer encounterTypeId;
     private String monthYear;
     private Integer[] roomId;
 
-    public AppointmentByMonth(Integer clinicId, Integer encounterTypeId,String monthYear) {
+    public AppointmentByMonth(Integer clinicId, Integer encounterTypeId, String monthYear) {
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
         this.monthYear = monthYear;

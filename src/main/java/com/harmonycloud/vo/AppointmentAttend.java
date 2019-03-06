@@ -1,9 +1,7 @@
 package com.harmonycloud.vo;
 
-/**
- * @author qidong
- * @date 2019/2/22
- */
+import java.util.Date;
+
 public class AppointmentAttend {
     private Integer roomId;
     private String attendanceStatus;

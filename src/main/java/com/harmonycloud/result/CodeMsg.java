@@ -20,6 +20,7 @@ public class CodeMsg {
     public static CodeMsg PARAMETER_ERROR = new CodeMsg("Parameter error");
     public static CodeMsg DUPLICATED_BOOKING = new CodeMsg("Duplicated booking");
     public static CodeMsg Full = new CodeMsg("Full booking");
+    public static CodeMsg URI = new CodeMsg("URI excepstion");
     public String getMsg() {
         return msg;
     }

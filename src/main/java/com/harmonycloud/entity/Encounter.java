@@ -7,28 +7,15 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * @author qidong
- * @date 2019/2/13
- */
-@Entity
-@Table(name = "encounter")
 public class Encounter {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer encounterId;
-    @Column(name = "patient_id")
     private Integer patientId;
-    @Column(name = "encounter_type_id")
     private Integer encounterTypeId;
-    @Column(name = "clinic_id")
     private Integer clinicId;
-    @Column(name = "room_id")
     private Integer roomId;
-    @Column(name = "date_time")
-    private String dateTime;
-    @Column(name = "appointment_id")
+    private Date dateTime;
     private Integer appointmentId;
+
     public Encounter() {
     }
 
@@ -49,7 +36,7 @@ public class Encounter {
     }
 
     public Encounter(Integer patientId, Integer encounterTypeId,
-                     Integer clinicId, Integer roomId, String dateTime, Integer appointmentId) {
+                     Integer clinicId, Integer roomId, Date dateTime, Integer appointmentId) {
         this.patientId = patientId;
         this.encounterTypeId = encounterTypeId;
         this.clinicId = clinicId;
@@ -98,11 +85,11 @@ public class Encounter {
         this.roomId = roomId;
     }
 
-    public String getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 

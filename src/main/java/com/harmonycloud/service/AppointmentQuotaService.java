@@ -11,7 +11,10 @@ import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -31,13 +34,13 @@ public class AppointmentQuotaService {
         Integer[] roomId = appointmentByMonth.getRoomId();
         List<AppointmentQuotaBo> appointmentQuotaBoList = new ArrayList<AppointmentQuotaBo>();
         List<AppointmentQuotaDto> appointmentQuotaDtoList = new ArrayList<AppointmentQuotaDto>();
+
         try {
-            List<AppointmentQuota> appointmentQuotaList = appointmentQuotaRepository.findByClinicIdAndEncounterTypeIdAndAppointmentDateContaining(
-                    appointmentByMonth.getClinicId(), appointmentByMonth.getEncounterTypeId(),
-                    appointmentByMonth.getMonthYear());
+            List<AppointmentQuota> appointmentQuotaList = appointmentQuotaRepository.findByQuotalist(
+                    appointmentByMonth.getClinicId(), appointmentByMonth.getEncounterTypeId(),appointmentByMonth.getMonthYear());
             //判断这一天是否是假期，存入AppointmentQuotaBo中
             for (int i = 0; i < appointmentQuotaList.size(); i++) {
-                if (holidayDateSet.contains(appointmentQuotaList.get(i).getAppointmentDate())) {
+                if (holidayDateSet.contains(appointmentQuotaList.get(i).getAppointmentDate().toString())) {
                     AppointmentQuotaBo appointmentQuotaBo = new AppointmentQuotaBo(appointmentQuotaList.get(i).getAppointmentQuotaId(),
                             appointmentQuotaList.get(i).getClinicId(), appointmentQuotaList.get(i).getEncounterTypeId(), appointmentQuotaList.get(i).getAppointmentDate(),
                             appointmentQuotaList.get(i).getQuota(), true);
@@ -68,7 +71,7 @@ public class AppointmentQuotaService {
     }
 
     public void updateAppointmentQuotaList(String appointmentDate, Integer clinicId, Integer encouterTypdId, Integer roomID) {
-        AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByClinicIdAndEncounterTypeIdAndRoomIdAndAppointmentDate(clinicId, encouterTypdId, roomID, appointmentDate);
+        AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByappointmentDate(clinicId, encouterTypdId, roomID, appointmentDate);
         int quota = appointmentQuota.getQuota() - 1;
         int booked = appointmentQuota.getQuotaBooked() + 1;
         appointmentQuota.setQuota(quota);
@@ -86,7 +89,7 @@ public class AppointmentQuotaService {
      * @return
      */
     public Boolean isFull(String appointmentDate, Integer clinicId, Integer encouterTypdId, Integer roomID) {
-        AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByClinicIdAndEncounterTypeIdAndRoomIdAndAppointmentDate(clinicId, encouterTypdId, roomID, appointmentDate);
+        AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByappointmentDate(clinicId, encouterTypdId, roomID, appointmentDate);
         int quota = appointmentQuota.getQuota();
         if (quota > 0) {
             return false;

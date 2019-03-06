@@ -1,25 +1,19 @@
 package com.harmonycloud.entity;
 
-import com.fasterxml.classmate.GenericType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
-
-/**
- * @author qidong
- * @date 2019/2/13
- */
 
 @Entity
 @Table(name = "appoinment")
 @ApiModel
 public class Appointment {
     @Id
-    @SequenceGenerator(name = "appointmentSeq", sequenceName = "APPOINTMENT_SEQUENCE")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appointmentSeq")
+//    @SequenceGenerator(name = "appointmentSeq", sequenceName = "APPOINTMENT_SEQUENCE")
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appointmentSeq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @ApiModelProperty(name = "预约id", example = "1")
     private Integer appointmentId;
     @Column(name = "patient_id")
@@ -50,8 +44,8 @@ public class Appointment {
     @ApiModelProperty(name = "诊室名称", example = "1")
     private String roomName;
     @Column(name = "appointment_date")
-    @ApiModelProperty(name = "预约日期id", example = "02-Jan-2019")
-    private String appointmentDate;
+    @ApiModelProperty(name = "预约日期id", example = "2019-01-12")
+    private Date appointmentDate;
     @Column(name = "status")
     @ApiModelProperty(name = "预约能否到达", example = "1")
     private String status;
@@ -60,7 +54,7 @@ public class Appointment {
     private String attendanceStatus;
     @Column(name = "attendance_time")
     @ApiModelProperty(name = "到达", example = "2019-02-20 11:11:39")
-    private String attendanceTime;
+    private Date attendanceTime;
 
     public Appointment() {
     }
@@ -76,8 +70,8 @@ public class Appointment {
     }
 
     public Appointment(Integer patientId, Integer clinicId,
-                       Integer encounterTypeId, Integer roomId, String appointmentDate, String attendanceStatus,
-                       String patientDoc, String patientName, String encounterTypeName, String roomName,String clinicName) {
+                       Integer encounterTypeId, Integer roomId, Date appointmentDate, String attendanceStatus,
+                       String patientDoc, String patientName, String encounterTypeName, String roomName, String clinicName) {
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
@@ -88,11 +82,11 @@ public class Appointment {
         this.patientName = patientName;
         this.encounterTypeName = encounterTypeName;
         this.roomName = roomName;
-        this.clinicName=clinicName;
+        this.clinicName = clinicName;
     }
 
-    public Appointment(Integer appointmentId, Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, String appointmentDate,
-                       String status, String attendanceStatus, String attendanceTime) {
+    public Appointment(Integer appointmentId, Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, Date appointmentDate,
+                       String status, String attendanceStatus, Date attendanceTime) {
         this.appointmentId = appointmentId;
         this.patientId = patientId;
         this.clinicId = clinicId;
@@ -144,13 +138,6 @@ public class Appointment {
         this.roomId = roomId;
     }
 
-    public String getAppointmentDate() {
-        return appointmentDate;
-    }
-
-    public void setAppointmentDate(String appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
 
     public String getStatus() {
         return status;
@@ -168,11 +155,19 @@ public class Appointment {
         this.attendanceStatus = attendanceStatus;
     }
 
-    public String getAttendanceTime() {
+    public Date getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public void setAppointmentDate(Date appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
+
+    public Date getAttendanceTime() {
         return attendanceTime;
     }
 
-    public void setAttendanceTime(String attendanceTime) {
+    public void setAttendanceTime(Date attendanceTime) {
         this.attendanceTime = attendanceTime;
     }
 

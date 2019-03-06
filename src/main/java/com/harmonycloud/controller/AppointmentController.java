@@ -13,18 +13,20 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 @Api(value = "Appointment")
 @RestController
 public class AppointmentController {
 
-    @Resource
+    @Autowired
     AppointmentService appointmentService;
 
-    @Resource
+    @Autowired
     AppointmentQuotaService appointmentQuotaService;
 
 
@@ -50,7 +52,7 @@ public class AppointmentController {
 
     @ApiOperation(value = "appointment list by special day", response = Appointment.class)
     @ApiImplicitParam(name = "appointmentAttend", value = "appointment attend", dataType = "AppointmentAttend")
-    @PostMapping("/appointmentlist")
+    @PostMapping("/appointmentList")
     public Result getAppointmentList(@RequestBody AppointmentAttend appointmentAttend) {
         if (appointmentAttend.getAppointmentDate() == null || appointmentAttend.getAttendanceStatus() == null
                 || appointmentAttend.getRoomId() == null) {
@@ -79,15 +81,15 @@ public class AppointmentController {
                                @RequestParam("encounterTypeId") Integer typeId,
                                @RequestParam("roomId") Integer roomId,
                                @RequestParam("clinicId") Integer clinicId,
-                               @RequestParam("appointmentDate") String date) {
+                               @RequestParam("appointmentDate") Date date) {
         return appointmentService.isDuplicated(clinicId, patientId, typeId, roomId, date);
     }
 
     @GetMapping("/attend")
     @ApiOperation(value = "Mark The Attendance", httpMethod = "GET")
     @ApiImplicitParam(name = "id", value = "AppointmentId", paramType = "query", dataType = "Integer")
-    public Result bookAppointment(@RequestParam("id") Integer id) {
-        return appointmentService.markAttendence(id);
+    public Result markAttendance(@RequestParam("id") Integer id) throws Exception {
+            return appointmentService.markAttendance(id);
     }
 
 }
