@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -16,13 +17,13 @@ public class AppointmentQuotaBo {
     private Integer appointmentQuotaId;
     private Integer clinicId;
     private Integer encounterTypeId;
-    private Date appointmentDate;
+    private LocalDate appointmentDate;
     private Integer quota;
     private boolean isHoliday;
 
     public AppointmentQuotaBo() { }
 
-    public AppointmentQuotaBo(Integer appointmentQuotaId, Integer clinicId, Integer encounterTypeId, Date appointmentDate, Integer quota, boolean isHoliday) {
+    public AppointmentQuotaBo(Integer appointmentQuotaId, Integer clinicId, Integer encounterTypeId, LocalDate appointmentDate, Integer quota, boolean isHoliday) {
         this.appointmentQuotaId = appointmentQuotaId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
@@ -55,11 +56,11 @@ public class AppointmentQuotaBo {
         this.encounterTypeId = encounterTypeId;
     }
 
-    public Date getAppointmentDate() {
+    public LocalDate getAppointmentDate() {
         return appointmentDate;
     }
 
-    public void setAppointmentDate(Date appointmentDate) {
+    public void setAppointmentDate(LocalDate appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 

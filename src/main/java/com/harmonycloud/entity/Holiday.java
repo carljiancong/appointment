@@ -2,6 +2,7 @@ package com.harmonycloud.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -15,14 +16,14 @@ public class Holiday implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer holidayId;
     @Column(name = "holiday_date")
-    private Date holidayDate;
+    private LocalDate holidayDate;
     @Column(name = "holiday_description")
     private String holidayDescription;
 
     public Holiday() {
     }
 
-    public Holiday(Integer holidayId, Date holidayDate, String holidayDescription) {
+    public Holiday(Integer holidayId, LocalDate holidayDate, String holidayDescription) {
         this.holidayId = holidayId;
         this.holidayDate = holidayDate;
         this.holidayDescription = holidayDescription;
@@ -36,11 +37,11 @@ public class Holiday implements Serializable {
         this.holidayId = holidayId;
     }
 
-    public Date getHolidayDate() {
+    public LocalDate getHolidayDate() {
         return holidayDate;
     }
 
-    public void setHolidayDate(Date holidayDate) {
+    public void setHolidayDate(LocalDate holidayDate) {
         this.holidayDate = holidayDate;
     }
 

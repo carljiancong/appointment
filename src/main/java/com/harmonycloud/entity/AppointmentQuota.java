@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -30,7 +31,7 @@ public class AppointmentQuota {
     private Integer roomId;
     @Column(name = "appointment_date")
     @ApiModelProperty(name = "预约时间", example = "01-Jan-2019")
-    private Date appointmentDate;
+    private LocalDate appointmentDate;
     @Column(name = "quota")
     @ApiModelProperty(name = "人数额度", example = "10")
     private Integer quota;
@@ -42,7 +43,7 @@ public class AppointmentQuota {
     }
 
     public AppointmentQuota(Integer appointmentQuotaId, Integer clinicId, Integer encounterTypeId,
-                            Integer roomId, Date appointmentDate, Integer quota, Integer quotaBooked) {
+                            Integer roomId, LocalDate appointmentDate, Integer quota, Integer quotaBooked) {
         this.appointmentQuotaId = appointmentQuotaId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
@@ -60,11 +61,11 @@ public class AppointmentQuota {
         this.appointmentQuotaId = appointmentQuotaId;
     }
 
-    public Date getAppointmentDate() {
+    public LocalDate getAppointmentDate() {
         return appointmentDate;
     }
 
-    public void setAppointmentDate(Date appointmentDate) {
+    public void setAppointmentDate(LocalDate appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
