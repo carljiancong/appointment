@@ -11,6 +11,7 @@ import java.util.Date;
 @ApiModel
 public class Appointment {
     @Id
+
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @ApiModelProperty(name = "预约id", example = "1")
     private Integer appointmentId;

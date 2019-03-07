@@ -1,5 +1,6 @@
 package com.harmonycloud.service;
 
+import com.harmonycloud.bo.UserPrincipal;
 import com.harmonycloud.config.EncounterConfigurationProperties;
 import com.harmonycloud.dto.ResponseDto;
 import com.harmonycloud.entity.Appointment;
@@ -14,6 +15,7 @@ import org.apache.servicecomb.saga.omega.transaction.annotations.Compensable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,6 +105,8 @@ public class AppointmentService {
     public Result markAttendance(Integer appointmentId) throws Exception {
         Appointment appointment = null;
         ResponseDto encounterResponse = null;
+        UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
         try {
             appointment = appointmentRepository.findByAppointmentId(appointmentId);
             appointment.update("Attend");
@@ -111,25 +115,15 @@ public class AppointmentService {
             appointmentRepository.save(appointment);
             Encounter encounter = new Encounter(appointment.getPatientId(), appointment.getEncounterTypeId(), appointment.getClinicId(),
                     appointment.getRoomId(), date, appointmentId);
-            encounterResponse = syncService.save(config.getEncounterUri(), encounter);
+            encounterResponse = syncService.save(config.getEncounterUri(),userDetails.getToken(), encounter);
         } catch (TimeoutException e) {
             throw new RuntimeException("timeout", e);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("attend error");
         }
-        return Result.buildSuccess(encounterResponse);
+        return Result.buildSuccess(null);
     }
-
-//    public void attendanceCancel(Integer appointmentId) {
-//        try {
-//            Appointment appointment = appointmentRepository.findByAppointmentId(appointmentId);
-//            appointment.setAttendanceStatus("Not Attend");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 
     public Result getAppointmentList(AppointmentAttend appointmentAttend) {
         List<Appointment> appointmentList = null;
