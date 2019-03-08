@@ -24,5 +24,6 @@ public class UserPrincipalFactory {
         String givenName = claims.get("givenname").toString();
         String surName = claims.get("surname").toString();
         return new UserPrincipal(userId,token,givenName,surName,authorities);
+
     }
 }
