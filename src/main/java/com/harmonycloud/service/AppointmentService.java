@@ -66,7 +66,8 @@ public class AppointmentService {
             String encounterTypeName = appointmentVo.getEncounterTypeName();
             String roomName = appointmentVo.getRoomName();
             String clinicName = appointmentVo.getClinicName();
-            Appointment appointment = new Appointment(patientId, clinicId, typeId, roomId, date, "Not Attend", patientDoc, patientName, encounterTypeName, roomName, clinicName);
+            String patientSex = appointmentVo.getPatientSex();
+            Appointment appointment = new Appointment(patientId, clinicId, typeId, roomId, date, "Not Attend", patientDoc, patientName,patientSex, encounterTypeName, roomName, clinicName);
             appointmentRepository.save(appointment);
             appointmentQuotaService.updateAppointmentQuotaList(sdf.format(appointment.getAppointmentDate()), clinicId, typeId, roomId);
             return Result.buildSuccess(appointment);

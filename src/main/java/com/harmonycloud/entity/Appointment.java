@@ -11,7 +11,6 @@ import java.util.Date;
 @ApiModel
 public class Appointment {
     @Id
-
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @ApiModelProperty(name = "预约id", example = "1")
     private Integer appointmentId;
@@ -24,6 +23,9 @@ public class Appointment {
     @Column(name = "patient_name")
     @ApiModelProperty(name = "病患英文名", example = "yu,vicky")
     private String patientName;
+    @Column(name = "patient_sex")
+    @ApiModelProperty(name = "病患性别", example = "female")
+    private String patientSex;
     @Column(name = "clinic_id")
     @ApiModelProperty(name = "诊所id", example = "1")
     private Integer clinicId;
@@ -70,7 +72,7 @@ public class Appointment {
 
     public Appointment(Integer patientId, Integer clinicId,
                        Integer encounterTypeId, Integer roomId, Date appointmentDate, String attendanceStatus,
-                       String patientDoc, String patientName, String encounterTypeName, String roomName, String clinicName) {
+                       String patientDoc, String patientName,String patientSex, String encounterTypeName, String roomName, String clinicName) {
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
@@ -78,23 +80,36 @@ public class Appointment {
         this.appointmentDate = appointmentDate;
         this.attendanceStatus = attendanceStatus;
         this.patientDoc = patientDoc;
+        this.patientSex=patientSex;
         this.patientName = patientName;
         this.encounterTypeName = encounterTypeName;
         this.roomName = roomName;
         this.clinicName = clinicName;
     }
 
-    public Appointment(Integer appointmentId, Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, Date appointmentDate,
-                       String status, String attendanceStatus, Date attendanceTime) {
-        this.appointmentId = appointmentId;
+    public Appointment(Integer patientId, String patientDoc, String patientName, String patientSex, Integer clinicId, String clinicName, Integer encounterTypeId, String encounterTypeName, Integer roomId, String roomName, Date appointmentDate, String status, String attendanceStatus, Date attendanceTime) {
         this.patientId = patientId;
+        this.patientDoc = patientDoc;
+        this.patientName = patientName;
+        this.patientSex = patientSex;
         this.clinicId = clinicId;
+        this.clinicName = clinicName;
         this.encounterTypeId = encounterTypeId;
+        this.encounterTypeName = encounterTypeName;
         this.roomId = roomId;
+        this.roomName = roomName;
         this.appointmentDate = appointmentDate;
         this.status = status;
         this.attendanceStatus = attendanceStatus;
         this.attendanceTime = attendanceTime;
+    }
+
+    public String getPatientSex() {
+        return patientSex;
+    }
+
+    public void setPatientSex(String patientSex) {
+        this.patientSex = patientSex;
     }
 
     public Integer getAppointmentId() {
