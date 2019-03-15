@@ -118,7 +118,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>appointment</finalName>
+		<finalName>ROOT</finalName>
 	</build>
 
 </project>
