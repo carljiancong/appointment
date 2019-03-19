@@ -10,20 +10,20 @@
 	</parent>
 	<groupId>com.harmonycloud</groupId>
 	<artifactId>appointment</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>appointment</name>
 	<description>Demo project for Spring Boot</description>
 
+	<packaging>war</packaging>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>thirdparty</id>
-			<url>http://10.10.102.101:8081/nexus/content/repositories/thirdparty/</url>
-		</repository>
-	</repositories>
+	<!--<repositories>-->
+		<!--<repository>-->
+			<!--<id>thirdparty</id>-->
+			<!--<url>http://10.10.102.101:8081/nexus/content/repositories/thirdparty/</url>-->
+		<!--</repository>-->
+	<!--</repositories>-->
 
 	<dependencies>
 		<dependency>
@@ -33,6 +33,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -67,8 +79,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3.0</version>
+			<artifactId>ojdbc8</artifactId>
+			<version>12.2.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -106,6 +118,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>ROOT</finalName>
 	</build>
 
 </project>
