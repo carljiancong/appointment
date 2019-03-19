@@ -1,8 +1,8 @@
-package com.harmonycloud.vo;
+package com.harmonycloud.bo;
 
 import java.util.Date;
 
-public class AppointmentVo {
+public class AppointmentBo {
     private Integer patientId;
     private Integer clinicId;
     private Integer encounterTypeId;
@@ -15,10 +15,11 @@ public class AppointmentVo {
     private String roomName;
     private String clinicName;
 
-    public AppointmentVo() {
+    public AppointmentBo() {
     }
 
-    public AppointmentVo(Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, Date date, String patientName, String patientDoc, String patientSex, String encounterTypeName, String roomName, String clinicName) {
+    public AppointmentBo(Integer patientId, Integer clinicId, Integer encounterTypeId, Integer roomId, Date date, String patientName,
+                         String patientDoc, String patientSex, String encounterTypeName, String roomName, String clinicName) {
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;

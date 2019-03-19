@@ -5,13 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
-
-/**
- * @author qidong
- * @String 2019/2/13
- */
 @Entity
 @Table(name = "Appoinment_quota")
 @ApiModel

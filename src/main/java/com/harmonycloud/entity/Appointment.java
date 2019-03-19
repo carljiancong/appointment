@@ -1,5 +1,7 @@
 package com.harmonycloud.entity;
 
+import com.harmonycloud.enums.ErrorMsgEnum;
+import com.harmonycloud.exception.AppointmentException;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -60,19 +62,9 @@ public class Appointment {
     public Appointment() {
     }
 
-    public void update(String status) throws Exception {
-        if (status.equals("Attend")) {
-            if (this.attendanceStatus.equals("Not Attend")) {
-                this.attendanceStatus = status;
-            } else {
-                throw new Exception("Illegal");
-            }
-        }
-    }
-
     public Appointment(Integer patientId, Integer clinicId,
                        Integer encounterTypeId, Integer roomId, Date appointmentDate, String attendanceStatus,
-                       String patientDoc, String patientName,String patientSex, String encounterTypeName, String roomName, String clinicName) {
+                       String patientDoc, String patientName, String patientSex, String encounterTypeName, String roomName, String clinicName) {
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
@@ -80,28 +72,21 @@ public class Appointment {
         this.appointmentDate = appointmentDate;
         this.attendanceStatus = attendanceStatus;
         this.patientDoc = patientDoc;
-        this.patientSex=patientSex;
+        this.patientSex = patientSex;
         this.patientName = patientName;
         this.encounterTypeName = encounterTypeName;
         this.roomName = roomName;
         this.clinicName = clinicName;
     }
 
-    public Appointment(Integer patientId, String patientDoc, String patientName, String patientSex, Integer clinicId, String clinicName, Integer encounterTypeId, String encounterTypeName, Integer roomId, String roomName, Date appointmentDate, String status, String attendanceStatus, Date attendanceTime) {
-        this.patientId = patientId;
-        this.patientDoc = patientDoc;
-        this.patientName = patientName;
-        this.patientSex = patientSex;
-        this.clinicId = clinicId;
-        this.clinicName = clinicName;
-        this.encounterTypeId = encounterTypeId;
-        this.encounterTypeName = encounterTypeName;
-        this.roomId = roomId;
-        this.roomName = roomName;
-        this.appointmentDate = appointmentDate;
-        this.status = status;
-        this.attendanceStatus = attendanceStatus;
-        this.attendanceTime = attendanceTime;
+    public void update(String appointmentStatus) throws Exception {
+        if (appointmentStatus.equals("Attend")) {
+            if (this.attendanceStatus.equals("Not Attend")) {
+                this.attendanceStatus = appointmentStatus;
+            } else {
+                throw new AppointmentException(ErrorMsgEnum.ILLEGAL.getMessage());
+            }
+        }
     }
 
     public String getPatientSex() {

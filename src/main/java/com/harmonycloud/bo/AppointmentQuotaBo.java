@@ -1,16 +1,6 @@
 package com.harmonycloud.bo;
 
-import com.harmonycloud.entity.AppointmentQuota;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 
 public class AppointmentQuotaBo {
@@ -21,7 +11,8 @@ public class AppointmentQuotaBo {
     private Integer quota;
     private boolean isHoliday;
 
-    public AppointmentQuotaBo() { }
+    public AppointmentQuotaBo() {
+    }
 
     public AppointmentQuotaBo(Integer appointmentQuotaId, Integer clinicId, Integer encounterTypeId, LocalDate appointmentDate, Integer quota, boolean isHoliday) {
         this.appointmentQuotaId = appointmentQuotaId;

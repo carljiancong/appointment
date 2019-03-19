@@ -20,10 +20,10 @@ public class UserPrincipal implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(Integer id,String token,String givenName,String surName,Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(Integer id, String token, String givenName, String surName, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
-        this.token=token;
-        this.surName=surName;
+        this.token = token;
+        this.surName = surName;
         this.givenName = givenName;
         this.authorities = authorities;
     }
@@ -56,8 +56,12 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         UserPrincipal that = (UserPrincipal) o;
         return Objects.equals(id, that.id);
     }
@@ -77,7 +81,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        String username = givenName+","+surName;
+        String username = givenName + "," + surName;
         return username;
     }
 
@@ -98,7 +102,6 @@ public class UserPrincipal implements UserDetails {
     public void setToken(String token) {
         this.token = token;
     }
-
 
 
 }

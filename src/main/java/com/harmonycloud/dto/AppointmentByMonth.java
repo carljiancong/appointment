@@ -1,13 +1,14 @@
-package com.harmonycloud.vo;
+package com.harmonycloud.dto;
 
-
-import java.util.Date;
 
 public class AppointmentByMonth {
     private Integer clinicId;
     private Integer encounterTypeId;
     private String monthYear;
     private Integer[] roomId;
+
+    public AppointmentByMonth() {
+    }
 
     public AppointmentByMonth(Integer clinicId, Integer encounterTypeId, String monthYear) {
         this.clinicId = clinicId;
@@ -23,8 +24,6 @@ public class AppointmentByMonth {
         this.monthYear = monthYear;
     }
 
-    public AppointmentByMonth() {
-    }
 
     public Integer getClinicId() {
         return clinicId;

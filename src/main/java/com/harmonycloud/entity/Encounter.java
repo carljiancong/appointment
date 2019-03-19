@@ -1,10 +1,5 @@
 package com.harmonycloud.entity;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.persistence.*;
 import java.util.Date;
 
 public class Encounter {
@@ -17,6 +12,16 @@ public class Encounter {
     private Integer appointmentId;
 
     public Encounter() {
+    }
+
+    public Encounter(Integer patientId, Integer encounterTypeId,
+                     Integer clinicId, Integer roomId, Date dateTime, Integer appointmentId) {
+        this.patientId = patientId;
+        this.encounterTypeId = encounterTypeId;
+        this.clinicId = clinicId;
+        this.roomId = roomId;
+        this.dateTime = dateTime;
+        this.appointmentId = appointmentId;
     }
 
     public Integer getEncounterId() {
@@ -35,15 +40,6 @@ public class Encounter {
         this.appointmentId = appointmentId;
     }
 
-    public Encounter(Integer patientId, Integer encounterTypeId,
-                     Integer clinicId, Integer roomId, Date dateTime, Integer appointmentId) {
-        this.patientId = patientId;
-        this.encounterTypeId = encounterTypeId;
-        this.clinicId = clinicId;
-        this.roomId = roomId;
-        this.dateTime = dateTime;
-        this.appointmentId = appointmentId;
-    }
 
     public Integer getId() {
         return encounterId;

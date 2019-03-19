@@ -1,6 +1,5 @@
-package com.harmonycloud.vo;
+package com.harmonycloud.dto;
 
-import java.util.Date;
 
 public class AppointmentAttend {
     private Integer roomId;

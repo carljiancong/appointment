@@ -3,12 +3,8 @@ package com.harmonycloud.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
-/**
- * @author qidong
- * @String 2019/2/13
- */
+
 @Entity
 @Table(name = "holiday")
 public class Holiday implements Serializable {
