@@ -6,9 +6,13 @@ import com.harmonycloud.dto.AppointmentQuotaDto;
 import com.harmonycloud.entity.AppointmentQuota;
 import com.harmonycloud.repository.AppointmentQuotaRepository;
 import com.harmonycloud.result.CimsResponseWrapper;
+import com.harmonycloud.util.LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -17,12 +21,18 @@ import java.util.Set;
 @Service
 public class AppointmentQuotaService {
 
+    private Logger logger = LoggerFactory.getLogger(AppointmentService.class);
+
+
     @Autowired
     private AppointmentQuotaRepository appointmentQuotaRepository;
 
     @Autowired
     private HolidayService holidayService;
+    @Autowired
+    HttpServletRequest request;
 
+    private String msg;
 
     /**
      * get appointment quota in a month
@@ -33,6 +43,7 @@ public class AppointmentQuotaService {
     public CimsResponseWrapper<List> getAppointmentQuotaList(AppointmentByMonth appointmentByMonth) throws Exception {
         //get the holiday to set
         Set<String> holidayDateSet = holidayService.getHolidayDate();
+
         Integer[] roomId = appointmentByMonth.getRoomId();
         List<AppointmentQuotaBo> appointmentQuotaBoList = new ArrayList<AppointmentQuotaBo>();
         List<AppointmentQuotaDto> appointmentQuotaDtoList = new ArrayList<AppointmentQuotaDto>();
@@ -66,9 +77,6 @@ public class AppointmentQuotaService {
             appointmentQuotaDtoList.add(appointmentQuotaDto);
         }
 
-
-
-
         return new CimsResponseWrapper<List>(true, null, appointmentQuotaDtoList);
     }
 
@@ -82,13 +90,15 @@ public class AppointmentQuotaService {
      */
 
     public void updateAppointmentQuotaList(String appointmentDate, Integer clinicId, Integer encouterTypeId, Integer roomID) throws Exception {
+        msg = LogUtil.getRequest(request) + ", information='";
+
         AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByappointmentDate(clinicId, encouterTypeId, roomID, appointmentDate);
         int quota = appointmentQuota.getQuota() - 1;
         int booked = appointmentQuota.getQuotaBooked() + 1;
         appointmentQuota.setQuota(quota);
         appointmentQuota.setQuotaBooked(booked);
         appointmentQuotaRepository.save(appointmentQuota);
-
+        logger.info(msg + "quota update success '");
     }
 
     /**

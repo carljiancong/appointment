@@ -1,5 +1,7 @@
 package com.harmonycloud.service;
 
+import com.harmonycloud.enums.ErrorMsgEnum;
+import com.harmonycloud.exception.AppointmentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +19,8 @@ import java.net.Proxy;
 public final class RestProxyTemplate {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired RestTemplate restTemplate;
+    @Autowired
+    RestTemplate restTemplate;
 
     @Bean
     public RestTemplate template() {
@@ -39,7 +42,7 @@ public final class RestProxyTemplate {
         try {
             portNr = Integer.parseInt(port);
         } catch (NumberFormatException e) {
-            logger.error("Unable to parse the proxy port number");
+            throw new AppointmentException(ErrorMsgEnum.FORMAT_ERROR.getMessage());
         }
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         InetSocketAddress address = new InetSocketAddress(host, portNr);

@@ -1,6 +1,9 @@
 package com.harmonycloud.security;
 
 import com.harmonycloud.bo.UserPrincipal;
+import com.harmonycloud.entity.Appointment;
+import com.harmonycloud.enums.ErrorMsgEnum;
+import com.harmonycloud.exception.AppointmentException;
 import com.harmonycloud.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,10 +42,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception ex) {
-            logger.error("Could not set user authentication in security context", ex);
+            throw new AppointmentException(ErrorMsgEnum.AUTHENTICATION_ERROR.getMessage());
         }
-
-
         filterChain.doFilter(request, response);
     }
 

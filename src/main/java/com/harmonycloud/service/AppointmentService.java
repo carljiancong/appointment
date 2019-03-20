@@ -10,6 +10,7 @@ import com.harmonycloud.repository.AppointmentRepository;
 import com.harmonycloud.result.CimsResponseWrapper;
 import com.harmonycloud.dto.AppointmentAttend;
 import com.harmonycloud.bo.AppointmentBo;
+import com.harmonycloud.util.LogUtil;
 import org.apache.servicecomb.saga.omega.context.annotations.SagaStart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -38,6 +40,11 @@ public class AppointmentService {
     @Autowired
     private AppointmentQuotaService appointmentQuotaService;
 
+    @Autowired
+    HttpServletRequest request;
+
+    private String msg;
+
     /**
      * get patient appointment history
      *
@@ -46,9 +53,11 @@ public class AppointmentService {
      * @throws Exception
      */
     public CimsResponseWrapper<List> getAppointmentHistory(Integer patientId) throws Exception {
+        msg = LogUtil.getRequest(request) + ", information='";
+
         List<Appointment> appoinmentList = appointmentRepository.findByPatientId(patientId);
         if (appoinmentList.size() == 0) {
-            logger.info("The patient had no appointment history");
+            logger.info(msg + "The patient had no appointment history '");
             return new CimsResponseWrapper<List>(true, null, null);
         }
         return new CimsResponseWrapper<List>(true, null, appoinmentList);
@@ -61,6 +70,8 @@ public class AppointmentService {
      * @return
      */
     public CimsResponseWrapper<Appointment> bookAppointment(AppointmentBo appointmentBo) throws Exception {
+        msg = LogUtil.getRequest(request) + ", information='";
+
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         Integer clinicId = appointmentBo.getClinicId();
@@ -76,6 +87,7 @@ public class AppointmentService {
         }
         //update quota
         appointmentQuotaService.updateAppointmentQuotaList(sdf.format(appointment.getAppointmentDate()), clinicId, typeId, roomId);
+        logger.info(msg + "book success :{}'", appointment);
         return new CimsResponseWrapper<Appointment>(true, null, appointment);
 
     }
@@ -123,6 +135,7 @@ public class AppointmentService {
     @Transactional(rollbackFor = Exception.class)
     @SagaStart
     public CimsResponseWrapper<String> markAttendance(Integer appointmentId) throws Exception {
+        msg = LogUtil.getRequest(request) + ", information='";
         UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
 
@@ -132,11 +145,13 @@ public class AppointmentService {
         appointment.update("Attend");
         appointment.setAttendanceTime(date);
         appointmentRepository.save(appointment);
+        logger.info(msg + "appointment status update success '");
 
         //create encounter
         Encounter encounter = new Encounter(appointment.getPatientId(), appointment.getEncounterTypeId(), appointment.getClinicId(),
                 appointment.getRoomId(), date, appointmentId);
         syncService.save(config.getEncounterUri(), userDetails.getToken(), encounter);
+        logger.info(msg + "mark attend success '");
 
         return new CimsResponseWrapper<>(true, null, "Mark attend success");
     }

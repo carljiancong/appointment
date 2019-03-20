@@ -27,11 +27,13 @@ public class HolidayService {
         Set<String> holidayDateSet = new HashSet<>();
 
         List<Holiday> holidayList = holidayRepository.findAll();
+
         for (Holiday hb : holidayList) {
             holidayDateSet.add(hb.getHolidayDate().toString());
         }
 
         return holidayDateSet;
+
     }
 
 }
