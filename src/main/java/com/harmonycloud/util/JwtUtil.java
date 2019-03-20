@@ -30,6 +30,7 @@ public class JwtUtil {
     public String getPublicKey() {
         try {
             String key = template.getForObject(GET_PUBLIC_KEY_URL, String.class);
+
             return key;
         } catch (RestClientException e) {
             e.printStackTrace();

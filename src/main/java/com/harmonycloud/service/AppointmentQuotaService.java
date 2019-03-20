@@ -65,6 +65,10 @@ public class AppointmentQuotaService {
             AppointmentQuotaDto appointmentQuotaDto = new AppointmentQuotaDto(roomId[i], appointmentQuotaBoListByroom);
             appointmentQuotaDtoList.add(appointmentQuotaDto);
         }
+
+
+
+
         return new CimsResponseWrapper<List>(true, null, appointmentQuotaDtoList);
     }
 
