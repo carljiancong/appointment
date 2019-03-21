@@ -3,7 +3,7 @@ package com.harmonycloud.service;
 import com.harmonycloud.bo.UserPrincipal;
 import com.harmonycloud.config.EncounterConfigurationProperties;
 import com.harmonycloud.entity.Appointment;
-import com.harmonycloud.entity.Encounter;
+import com.harmonycloud.dto.Encounter;
 import com.harmonycloud.enums.ErrorMsgEnum;
 import com.harmonycloud.exception.AppointmentException;
 import com.harmonycloud.repository.AppointmentRepository;

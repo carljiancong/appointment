@@ -11,8 +11,10 @@ public class Holiday implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer holidayId;
+
     @Column(name = "holiday_date")
     private LocalDate holidayDate;
+
     @Column(name = "holiday_description")
     private String holidayDescription;
 

@@ -1,9 +1,7 @@
 package com.harmonycloud.controller;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.harmonycloud.bo.AppointmentQuotaBo;
-import com.harmonycloud.dto.AppointmentQuotaDto;
 import com.harmonycloud.entity.Appointment;
 import com.harmonycloud.entity.AppointmentQuota;
 import com.harmonycloud.dto.AppointmentAttend;
@@ -18,8 +16,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import net.sf.json.JSONObject;
-import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

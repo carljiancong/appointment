@@ -2,10 +2,15 @@ package com.harmonycloud.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,7 +34,7 @@ public class JwtUtil {
     private String GET_PUBLIC_KEY_URL;
 
 
-    public String getPublicKey(HttpServletRequest request) {
+    public String getPublicKey(HttpServletRequest request) throws Exception {
         try {
             HttpHeaders headers = new HttpHeaders();
             if (request.getHeader("user") != null) {
@@ -38,8 +43,12 @@ public class JwtUtil {
             if (request.getHeader("clinic") != null) {
                 headers.add("clinic", request.getHeader("clinic"));
             }
-            String key = template.getForObject(GET_PUBLIC_KEY_URL, String.class);
+            TraceUtil.addTraceForHttp(request, headers);
+            RequestCallback requestCallback = template.httpEntityCallback(headers, String.class);
+            ResponseExtractor<ResponseEntity<String>> responseExtractor = template.responseEntityExtractor(String.class);
+            ResponseEntity<String> response = template.execute(GET_PUBLIC_KEY_URL, HttpMethod.GET, requestCallback, responseExtractor);
 
+            String key = response.getBody();
             return key;
         } catch (RestClientException e) {
             e.printStackTrace();
@@ -48,7 +57,7 @@ public class JwtUtil {
     }
 
 
-    public boolean validateToken(String authToken, HttpServletRequest request) {
+    public boolean validateToken(String authToken, HttpServletRequest request) throws Exception {
         try {
             String publicKey = getPublicKey(request);
             if (!StringUtils.isEmpty(publicKey)) {

@@ -1,14 +1,21 @@
-package com.harmonycloud.entity;
+package com.harmonycloud.dto;
 
 import java.util.Date;
 
 public class Encounter {
+
     private Integer encounterId;
+
     private Integer patientId;
+
     private Integer encounterTypeId;
+
     private Integer clinicId;
+
     private Integer roomId;
+
     private Date dateTime;
+
     private Integer appointmentId;
 
     public Encounter() {
