@@ -12,7 +12,7 @@ public class LogUtil {
             String ip = IpUtil.getIpAddress(request);
             String correlation = request.getHeader("x-b3-traceid");
             String loginName = request.getHeader("user");
-            Log log = new Log(ip, loginName, "CIMS", correlation, "User Application");
+            Log log = new Log(ip, loginName, "CIMS", correlation, "appointment Application");
             return log.toString();
         }
         return null;
