@@ -3,11 +3,13 @@ package com.harmonycloud.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -27,8 +29,15 @@ public class JwtUtil {
     private String GET_PUBLIC_KEY_URL;
 
 
-    public String getPublicKey() {
+    public String getPublicKey(HttpServletRequest request) {
         try {
+            HttpHeaders headers = new HttpHeaders();
+            if (request.getHeader("user") != null) {
+                headers.add("user", request.getHeader("user"));
+            }
+            if (request.getHeader("clinic") != null) {
+                headers.add("clinic", request.getHeader("clinic"));
+            }
             String key = template.getForObject(GET_PUBLIC_KEY_URL, String.class);
 
             return key;
@@ -39,9 +48,9 @@ public class JwtUtil {
     }
 
 
-    public boolean validateToken(String authToken) {
+    public boolean validateToken(String authToken, HttpServletRequest request) {
         try {
-            String publicKey = getPublicKey();
+            String publicKey = getPublicKey(request);
             if (!StringUtils.isEmpty(publicKey)) {
                 X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey));
                 KeyFactory x509KeyFactory = KeyFactory.getInstance("RSA");

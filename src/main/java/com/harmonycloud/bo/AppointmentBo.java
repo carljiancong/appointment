@@ -3,16 +3,27 @@ package com.harmonycloud.bo;
 import java.util.Date;
 
 public class AppointmentBo {
+
     private Integer patientId;
+
     private Integer clinicId;
+
     private Integer encounterTypeId;
+
     private Integer roomId;
+    //appointmete date
     private Date date;
+
     private String patientName;
+
     private String patientDoc;
+
     private String patientSex;
+
     private String encounterTypeName;
+
     private String roomName;
+
     private String clinicName;
 
     public AppointmentBo() {

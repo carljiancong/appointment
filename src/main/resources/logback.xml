@@ -18,7 +18,8 @@
             <maxHistory>2</maxHistory>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %ex [%thread] %-5level %logger{36} %msg %n
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %ex [%thread] %-5level %logger{36}
+                -%msg %n
             </Pattern>
         </layout>
     </appender>
@@ -38,7 +39,8 @@
             <maxHistory>2</maxHistory>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %ex [%thread] %-5level %logger{36} %msg %n
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %ex [%thread] %-5level %logger{36}
+                -%msg %n
 
             </Pattern>
         </layout>
@@ -60,7 +62,8 @@
             <maxHistory>2</maxHistory>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %ex [%thread] %-5level %logger{36} %msg %n
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %ex [%thread] %-5level %logger{36}
+                -%msg %n
 
             </Pattern>
         </layout>

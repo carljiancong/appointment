@@ -1,10 +1,15 @@
-package com.harmonycloud.dto;
+package com.harmonycloud.log;
 
 public class Log {
+
     private String clientIp;
+
     private String loginName;
+
     private String projectCode;
+    //uniqueId
     private String correlationId;
+
     private String applicationName;
 
     public Log() {

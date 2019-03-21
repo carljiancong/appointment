@@ -7,7 +7,6 @@ import com.harmonycloud.entity.Encounter;
 import com.harmonycloud.enums.ErrorMsgEnum;
 import com.harmonycloud.exception.AppointmentException;
 import com.harmonycloud.repository.AppointmentRepository;
-import com.harmonycloud.result.CimsResponseWrapper;
 import com.harmonycloud.dto.AppointmentAttend;
 import com.harmonycloud.bo.AppointmentBo;
 import com.harmonycloud.util.LogUtil;
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
@@ -43,7 +43,6 @@ public class AppointmentService {
     @Autowired
     HttpServletRequest request;
 
-    private String msg;
 
     /**
      * get patient appointment history
@@ -52,15 +51,15 @@ public class AppointmentService {
      * @return
      * @throws Exception
      */
-    public CimsResponseWrapper<List> getAppointmentHistory(Integer patientId) throws Exception {
-        msg = LogUtil.getRequest(request) + ", information='";
+    public List<Appointment> getAppointmentHistory(Integer patientId) throws Exception {
+        String msg = LogUtil.getRequest(request) + ", information='";
 
         List<Appointment> appoinmentList = appointmentRepository.findByPatientId(patientId);
-        if (appoinmentList.size() == 0) {
+        if (CollectionUtils.isEmpty(appoinmentList)) {
             logger.info(msg + "The patient had no appointment history '");
-            return new CimsResponseWrapper<List>(true, null, null);
+            return null;
         }
-        return new CimsResponseWrapper<List>(true, null, appoinmentList);
+        return appoinmentList;
     }
 
     /**
@@ -69,8 +68,9 @@ public class AppointmentService {
      * @param appointmentBo model
      * @return
      */
-    public CimsResponseWrapper<Appointment> bookAppointment(AppointmentBo appointmentBo) throws Exception {
-        msg = LogUtil.getRequest(request) + ", information='";
+    public Appointment bookAppointment(AppointmentBo appointmentBo) throws Exception {
+        Long time = System.currentTimeMillis();
+        String msg = LogUtil.getRequest(request) + ", information='";
 
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -88,7 +88,9 @@ public class AppointmentService {
         //update quota
         appointmentQuotaService.updateAppointmentQuotaList(sdf.format(appointment.getAppointmentDate()), clinicId, typeId, roomId);
         logger.info(msg + "book success :{}'", appointment);
-        return new CimsResponseWrapper<Appointment>(true, null, appointment);
+        System.out.println(System.currentTimeMillis() - time);
+        logger.info(msg + "running time :", (System.currentTimeMillis() - time));
+        return appointment;
 
     }
 
@@ -102,24 +104,23 @@ public class AppointmentService {
      * @param date      appointmentDate
      * @return
      */
-    public CimsResponseWrapper isDuplicated(Integer clinicId, Integer patientId, Integer typeId, Integer roomId, Date date) throws Exception {
+    public void isDuplicated(Integer clinicId, Integer patientId, Integer typeId, Integer roomId, Date date) throws Exception {
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         Boolean isfull = appointmentQuotaService.isFull(sdf.format(date), clinicId, typeId, roomId);
         if (!isfull) {
             List<Appointment> appointmentList = appointmentRepository.findByPatientIdAndEncounterTypeIdAndRoomIdAndAttendanceStatus(patientId, typeId, roomId, "Not Attend");
-            if (appointmentList.size() == 0) {
-                return new CimsResponseWrapper<>(true, null, null);
-            }
-            Date nowtime = sdf.parse(sdf.format(new Date()));
-            for (int i = 0; i < appointmentList.size(); i++) {
-                Date appointmentTime = appointmentList.get(i).getAppointmentDate();
-                int flag = appointmentTime.compareTo(nowtime);
-                if (flag >= 0) {
-                    throw new AppointmentException(ErrorMsgEnum.DUPLICATED_BOOKING.getMessage());
+            if (appointmentList.size() != 0) {
+                Date nowtime = sdf.parse(sdf.format(new Date()));
+                for (int i = 0; i < appointmentList.size(); i++) {
+                    Date appointmentTime = appointmentList.get(i).getAppointmentDate();
+                    int flag = appointmentTime.compareTo(nowtime);
+                    if (flag >= 0) {
+                        throw new AppointmentException(ErrorMsgEnum.DUPLICATED_BOOKING.getMessage());
+                    }
                 }
             }
-            return new CimsResponseWrapper<>(true, null, null);
+
         } else {
             throw new AppointmentException(ErrorMsgEnum.FUll_BOOKING.getMessage());
         }
@@ -134,8 +135,8 @@ public class AppointmentService {
      */
     @Transactional(rollbackFor = Exception.class)
     @SagaStart
-    public CimsResponseWrapper<String> markAttendance(Integer appointmentId) throws Exception {
-        msg = LogUtil.getRequest(request) + ", information='";
+    public void markAttendance(Integer appointmentId) throws Exception {
+        String msg = LogUtil.getRequest(request) + ", information='";
         UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
 
@@ -153,7 +154,6 @@ public class AppointmentService {
         syncService.save(config.getEncounterUri(), userDetails.getToken(), encounter);
         logger.info(msg + "mark attend success '");
 
-        return new CimsResponseWrapper<>(true, null, "Mark attend success");
     }
 
     /**
@@ -162,7 +162,7 @@ public class AppointmentService {
      * @param appointmentAttend model
      * @return
      */
-    public CimsResponseWrapper<List> getAppointmentList(AppointmentAttend appointmentAttend) {
+    public List<Appointment> getAppointmentList(AppointmentAttend appointmentAttend) {
         List<Appointment> appointmentList = new ArrayList<>();
 
         if (appointmentAttend.getRoomId() == 0 && "All".equals(appointmentAttend.getAttendanceStatus())) {
@@ -178,6 +178,6 @@ public class AppointmentService {
                     appointmentAttend.getAttendanceStatus(), appointmentAttend.getAppointmentDate());
         }
 
-        return new CimsResponseWrapper<List>(true, null, appointmentList);
+        return appointmentList;
     }
 }

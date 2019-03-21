@@ -2,10 +2,8 @@ package com.harmonycloud.service;
 
 import com.harmonycloud.dto.AppointmentByMonth;
 import com.harmonycloud.bo.AppointmentQuotaBo;
-import com.harmonycloud.dto.AppointmentQuotaDto;
 import com.harmonycloud.entity.AppointmentQuota;
 import com.harmonycloud.repository.AppointmentQuotaRepository;
-import com.harmonycloud.result.CimsResponseWrapper;
 import com.harmonycloud.util.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +30,6 @@ public class AppointmentQuotaService {
     @Autowired
     HttpServletRequest request;
 
-    private String msg;
 
     /**
      * get appointment quota in a month
@@ -40,44 +37,31 @@ public class AppointmentQuotaService {
      * @param appointmentByMonth model
      * @return
      */
-    public CimsResponseWrapper<List> getAppointmentQuotaList(AppointmentByMonth appointmentByMonth) throws Exception {
+    public List<AppointmentQuotaBo> getAppointmentQuotaList(AppointmentByMonth appointmentByMonth) throws Exception {
         //get the holiday to set
         Set<String> holidayDateSet = holidayService.getHolidayDate();
 
-        Integer[] roomId = appointmentByMonth.getRoomId();
         List<AppointmentQuotaBo> appointmentQuotaBoList = new ArrayList<AppointmentQuotaBo>();
-        List<AppointmentQuotaDto> appointmentQuotaDtoList = new ArrayList<AppointmentQuotaDto>();
 
         //get appointment quota list in a month
         List<AppointmentQuota> appointmentQuotaList = appointmentQuotaRepository.findByQuotalist(
                 appointmentByMonth.getClinicId(), appointmentByMonth.getEncounterTypeId(), appointmentByMonth.getMonthYear());
         //if the day is a holiday，save  AppointmentQuotaBo
-        for (int i = 0; i < appointmentQuotaList.size(); i++) {
-            if (holidayDateSet.contains(appointmentQuotaList.get(i).getAppointmentDate().toString())) {
-                AppointmentQuotaBo appointmentQuotaBo = new AppointmentQuotaBo(appointmentQuotaList.get(i).getAppointmentQuotaId(),
-                        appointmentQuotaList.get(i).getClinicId(), appointmentQuotaList.get(i).getEncounterTypeId(), appointmentQuotaList.get(i).getAppointmentDate(),
-                        appointmentQuotaList.get(i).getQuota(), true);
+        appointmentQuotaList.forEach(appointmentQuota -> {
+            if (holidayDateSet.contains(appointmentQuota.getAppointmentDate().toString())) {
+                AppointmentQuotaBo appointmentQuotaBo = new AppointmentQuotaBo(appointmentQuota.getAppointmentQuotaId(),
+                        appointmentQuota.getClinicId(), appointmentQuota.getEncounterTypeId(), appointmentQuota.getAppointmentDate(),
+                        appointmentQuota.getRoomId(), appointmentQuota.getQuota(), true);
                 appointmentQuotaBoList.add(appointmentQuotaBo);
             } else {
-                AppointmentQuotaBo appointmentQuotaBo = new AppointmentQuotaBo(appointmentQuotaList.get(i).getAppointmentQuotaId(),
-                        appointmentQuotaList.get(i).getClinicId(), appointmentQuotaList.get(i).getEncounterTypeId(), appointmentQuotaList.get(i).getAppointmentDate(),
-                        appointmentQuotaList.get(i).getQuota(), false);
+                AppointmentQuotaBo appointmentQuotaBo = new AppointmentQuotaBo(appointmentQuota.getAppointmentQuotaId(),
+                        appointmentQuota.getClinicId(), appointmentQuota.getEncounterTypeId(), appointmentQuota.getAppointmentDate(),
+                        appointmentQuota.getRoomId(), appointmentQuota.getQuota(), false);
                 appointmentQuotaBoList.add(appointmentQuotaBo);
             }
-        }
-        //group by roomId
-        for (int i = 0; i < roomId.length; i++) {
-            List<AppointmentQuotaBo> appointmentQuotaBoListByroom = new ArrayList<AppointmentQuotaBo>();
-            for (int j = 0; j < appointmentQuotaBoList.size(); j++) {
-                if (appointmentQuotaList.get(j).getRoomId() == roomId[i]) {
-                    appointmentQuotaBoListByroom.add(appointmentQuotaBoList.get(j));
-                }
-            }
-            AppointmentQuotaDto appointmentQuotaDto = new AppointmentQuotaDto(roomId[i], appointmentQuotaBoListByroom);
-            appointmentQuotaDtoList.add(appointmentQuotaDto);
-        }
+        });
+        return appointmentQuotaBoList;
 
-        return new CimsResponseWrapper<List>(true, null, appointmentQuotaDtoList);
     }
 
     /**
@@ -90,7 +74,7 @@ public class AppointmentQuotaService {
      */
 
     public void updateAppointmentQuotaList(String appointmentDate, Integer clinicId, Integer encouterTypeId, Integer roomID) throws Exception {
-        msg = LogUtil.getRequest(request) + ", information='";
+        String msg = LogUtil.getRequest(request) + ", information='";
 
         AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByappointmentDate(clinicId, encouterTypeId, roomID, appointmentDate);
         int quota = appointmentQuota.getQuota() - 1;

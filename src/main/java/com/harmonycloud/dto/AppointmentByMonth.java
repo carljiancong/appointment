@@ -3,9 +3,11 @@ package com.harmonycloud.dto;
 
 public class AppointmentByMonth {
     private Integer clinicId;
+
     private Integer encounterTypeId;
+
+    //yyyy-mm
     private String monthYear;
-    private Integer[] roomId;
 
     public AppointmentByMonth() {
     }
@@ -41,11 +43,5 @@ public class AppointmentByMonth {
         this.encounterTypeId = encounterTypeId;
     }
 
-    public Integer[] getRoomId() {
-        return roomId;
-    }
 
-    public void setRoomId(Integer[] roomId) {
-        this.roomId = roomId;
-    }
 }

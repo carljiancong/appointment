@@ -4,21 +4,30 @@ import java.time.LocalDate;
 
 
 public class AppointmentQuotaBo {
+
     private Integer appointmentQuotaId;
+
     private Integer clinicId;
+
     private Integer encounterTypeId;
+
     private LocalDate appointmentDate;
+
+    private Integer roomId;
+
     private Integer quota;
+
     private boolean isHoliday;
 
     public AppointmentQuotaBo() {
     }
 
-    public AppointmentQuotaBo(Integer appointmentQuotaId, Integer clinicId, Integer encounterTypeId, LocalDate appointmentDate, Integer quota, boolean isHoliday) {
+    public AppointmentQuotaBo(Integer appointmentQuotaId, Integer clinicId, Integer encounterTypeId, LocalDate appointmentDate, Integer roomId, Integer quota, boolean isHoliday) {
         this.appointmentQuotaId = appointmentQuotaId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
         this.appointmentDate = appointmentDate;
+        this.roomId = roomId;
         this.quota = quota;
         this.isHoliday = isHoliday;
     }
@@ -69,6 +78,14 @@ public class AppointmentQuotaBo {
 
     public void setHoliday(boolean holiday) {
         isHoliday = holiday;
+    }
+
+    public Integer getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
     }
 }
 

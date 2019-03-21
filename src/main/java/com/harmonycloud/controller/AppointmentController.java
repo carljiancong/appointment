@@ -1,5 +1,9 @@
 package com.harmonycloud.controller;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.harmonycloud.bo.AppointmentQuotaBo;
+import com.harmonycloud.dto.AppointmentQuotaDto;
 import com.harmonycloud.entity.Appointment;
 import com.harmonycloud.entity.AppointmentQuota;
 import com.harmonycloud.dto.AppointmentAttend;
@@ -14,11 +18,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSONObject;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Api(value = "Appointment")
 @RestController
@@ -44,11 +49,14 @@ public class AppointmentController {
         if (patientId == null || patientId <= 0) {
             throw new AppointmentException(ErrorMsgEnum.PARAMETER_ERROR.getMessage());
         }
-        return appointmentService.getAppointmentHistory(patientId);
+        List<Appointment> appointmentList = appointmentService.getAppointmentHistory(patientId);
+
+        return new CimsResponseWrapper<>(true, null, appointmentList);
     }
 
     /**
      * get the appointment quota in this month
+     *
      * @param appointmentByMonth
      * @return
      * @throws Exception
@@ -56,11 +64,22 @@ public class AppointmentController {
     @ApiOperation(value = "quota list", response = AppointmentQuota.class)
     @ApiImplicitParam(name = "appointmentByMonth", value = "appointmentByMonth", required = true, dataType = "AppointmentByMonth")
     @PostMapping("/quotaList")
-    public CimsResponseWrapper<List> getQuotaList(@RequestBody AppointmentByMonth appointmentByMonth) throws Exception {
+    public CimsResponseWrapper<Map> getQuotaList(@RequestBody AppointmentByMonth appointmentByMonth) throws Exception {
         if (appointmentByMonth.getClinicId() == null || appointmentByMonth.getEncounterTypeId() == null) {
             throw new AppointmentException(ErrorMsgEnum.PARAMETER_ERROR.getMessage());
         }
-        return appointmentQuotaService.getAppointmentQuotaList(appointmentByMonth);
+
+        List<AppointmentQuotaBo> appointmentQuotaBoList = appointmentQuotaService.getAppointmentQuotaList(appointmentByMonth);
+        //group by roomId
+        Map<Integer, List<AppointmentQuotaBo>> map = new HashMap<>();
+        appointmentQuotaBoList.forEach(appointmentQuotaBo -> {
+            if (!map.containsKey(appointmentQuotaBo.getRoomId())) {
+                map.put(appointmentQuotaBo.getRoomId(), Lists.newArrayList());
+            }
+            map.get(appointmentQuotaBo.getRoomId()).add(appointmentQuotaBo);
+        });
+
+        return new CimsResponseWrapper<>(true, null, map);
     }
 
     /**
@@ -78,7 +97,8 @@ public class AppointmentController {
                 || appointmentAttend.getRoomId() == null) {
             throw new AppointmentException(ErrorMsgEnum.PARAMETER_ERROR.getMessage());
         }
-        return appointmentService.getAppointmentList(appointmentAttend);
+        List<Appointment> appointmentList = appointmentService.getAppointmentList(appointmentAttend);
+        return new CimsResponseWrapper<>(true, null, appointmentList);
     }
 
     /**
@@ -96,7 +116,9 @@ public class AppointmentController {
                 || appointmentBo.getEncounterTypeId() <= 0) {
             throw new AppointmentException(ErrorMsgEnum.PARAMETER_ERROR.getMessage());
         }
-        return appointmentService.bookAppointment(appointmentBo);
+        Appointment appointment = appointmentService.bookAppointment(appointmentBo);
+
+        return new CimsResponseWrapper<>(true, null, appointment);
     }
 
     /**
@@ -119,15 +141,17 @@ public class AppointmentController {
             @ApiImplicitParam(name = "clinicId", value = "clinicId", paramType = "query", dataType = "Integer"),
             @ApiImplicitParam(name = "appointmentDate", value = "appointmentDate", paramType = "query", dataType = "String")
     })
-    public CimsResponseWrapper isDuplicated(@RequestParam("patientId") Integer patientId,
-                                            @RequestParam("encounterTypeId") Integer typeId,
-                                            @RequestParam("roomId") Integer roomId,
-                                            @RequestParam("clinicId") Integer clinicId,
-                                            @RequestParam("appointmentDate") Date date) throws Exception {
+    public CimsResponseWrapper<String> isDuplicated(@RequestParam("patientId") Integer patientId,
+                                                    @RequestParam("encounterTypeId") Integer typeId,
+                                                    @RequestParam("roomId") Integer roomId,
+                                                    @RequestParam("clinicId") Integer clinicId,
+                                                    @RequestParam("appointmentDate") Date date) throws Exception {
         if (patientId <= 0 || typeId <= 0 || roomId <= 0 || clinicId <= 0 || date == null) {
             throw new AppointmentException(ErrorMsgEnum.PARAMETER_ERROR.getMessage());
         }
-        return appointmentService.isDuplicated(clinicId, patientId, typeId, roomId, date);
+
+        appointmentService.isDuplicated(clinicId, patientId, typeId, roomId, date);
+        return new CimsResponseWrapper<>(true, null, null);
     }
 
     /**
@@ -144,7 +168,8 @@ public class AppointmentController {
         if (id == null || id <= 0) {
             throw new AppointmentException(ErrorMsgEnum.PARAMETER_ERROR.getMessage());
         }
-        return appointmentService.markAttendance(id);
+        appointmentService.markAttendance(id);
+        return new CimsResponseWrapper<>(true, null, "Mark attend success");
     }
 
 }

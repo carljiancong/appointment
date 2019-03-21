@@ -3,7 +3,9 @@ package com.harmonycloud.dto;
 
 public class AppointmentAttend {
     private Integer roomId;
+
     private String attendanceStatus;
+
     private String appointmentDate;
 
     public AppointmentAttend() {
