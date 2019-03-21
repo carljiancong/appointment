@@ -2,19 +2,17 @@ package com.harmonycloud.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -44,11 +42,8 @@ public class JwtUtil {
                 headers.add("clinic", request.getHeader("clinic"));
             }
             TraceUtil.addTraceForHttp(request, headers);
-            RequestCallback requestCallback = template.httpEntityCallback(headers, String.class);
-            ResponseExtractor<ResponseEntity<String>> responseExtractor = template.responseEntityExtractor(String.class);
-            ResponseEntity<String> response = template.execute(GET_PUBLIC_KEY_URL, HttpMethod.GET, requestCallback, responseExtractor);
-
-            String key = response.getBody();
+            HttpEntity httpEntity = new HttpEntity(null, headers);
+            String key = template.exchange(new URI(GET_PUBLIC_KEY_URL), HttpMethod.GET, httpEntity, String.class).getBody();
             return key;
         } catch (RestClientException e) {
             e.printStackTrace();

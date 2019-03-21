@@ -3,7 +3,6 @@ package com.harmonycloud.util;
 import com.harmonycloud.log.Log;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
 
 public class LogUtil {
 
