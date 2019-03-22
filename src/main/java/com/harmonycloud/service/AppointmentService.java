@@ -39,7 +39,8 @@ public class AppointmentService {
 
     @Autowired
     private AppointmentQuotaService appointmentQuotaService;
-
+    @Autowired
+    private HolidayService holidayService;
     @Autowired
     HttpServletRequest request;
 
@@ -107,7 +108,13 @@ public class AppointmentService {
     public void isDuplicated(Integer clinicId, Integer patientId, Integer typeId, Integer roomId, Date date) throws Exception {
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+        Set<String> holidayDateSet = holidayService.getHolidayDate();
+        if (holidayDateSet.contains(sdf.format(date))) {
+            throw new AppointmentException(ErrorMsgEnum.HOLIDAY.getMessage());
+        }
+
         Boolean isfull = appointmentQuotaService.isFull(sdf.format(date), clinicId, typeId, roomId);
+
         if (!isfull) {
             List<Appointment> appointmentList = appointmentRepository.findByPatientIdAndEncounterTypeIdAndRoomIdAndAttendanceStatus(patientId, typeId, roomId, "Not Attend");
             if (appointmentList.size() != 0) {
@@ -133,7 +140,7 @@ public class AppointmentService {
      * @return
      * @throws Exception
      */
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Throwable.class)
     @SagaStart
     public void markAttendance(Integer appointmentId) throws Exception {
         String msg = LogUtil.getRequest(request) + ", information='";
@@ -151,7 +158,11 @@ public class AppointmentService {
         //create encounter
         Encounter encounter = new Encounter(appointment.getPatientId(), appointment.getEncounterTypeId(), appointment.getClinicId(),
                 appointment.getRoomId(), date, appointmentId);
-        syncService.save(config.getEncounterUri(), userDetails.getToken(), encounter);
+
+        if (!syncService.save(config.getEncounterUri(), userDetails.getToken(), encounter).isSuccess()) {
+            logger.info(msg + "create encounter error '");
+            throw new AppointmentException(ErrorMsgEnum.ATTEND_ERROR.getMessage());
+        }
         logger.info(msg + "mark attend success '");
 
     }

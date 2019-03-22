@@ -40,7 +40,7 @@ public class AppointmentController {
      */
     @GetMapping("/appointmentHistory")
     @ApiOperation(value = "patient appointment list", response = Appointment.class)
-    @ApiImplicitParam(name = "patientId", value = "patientId", required = true, paramType = "query", dataType = "Integer")
+    @ApiImplicitParam(name = "patientId", value = "patientId", paramType = "query", dataType = "Integer")
     public CimsResponseWrapper<List> getAppointmentHistory(@RequestParam("patientId") Integer patientId) throws Exception {
         if (patientId == null || patientId <= 0) {
             throw new AppointmentException(ErrorMsgEnum.PARAMETER_ERROR.getMessage());
