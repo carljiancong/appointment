@@ -11,12 +11,12 @@ import java.util.List;
 public interface AppointmentQuotaRepository extends JpaRepository<AppointmentQuota, Integer> {
 
 
-    @Query(nativeQuery = true, value = "select  * from \"appoinment_quota\" where \"clinic_id\" = ?1 and \"encounter_type_id\"=?2\n" +
+    @Query(nativeQuery = true, value = "select  * from \"appointment_quota\" where \"clinic_id\" = ?1 and \"encounter_type_id\"=?2\n" +
             "                                    and to_char(\"appointment_date\",'yyyy-mm-dd') like concat(?3,'%')")
     List<AppointmentQuota> findByQuotalist(Integer clinicId, Integer encounterTypeId, String monthYear);
 
 
-    @Query(nativeQuery = true, value = "select  * from \"appoinment_quota\" where \"clinic_id\" = ?1 and \"encounter_type_id\"=?2\n" +
+    @Query(nativeQuery = true, value = "select  * from \"appointment_quota\" where \"clinic_id\" = ?1 and \"encounter_type_id\"=?2\n" +
             "                                    and \"room_id\"=?3 and to_char(\"appointment_date\",'yyyy-mm-dd') like concat(?4,'%')")
     AppointmentQuota findByappointmentDate(Integer clinicId, Integer encounterTypeId, Integer roomId, String appointmentData);
 }
