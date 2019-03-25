@@ -1,0 +1,56 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: appointment
+    version: v1
+  name: appointment
+  namespace: dhcims-msapoc-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appointment
+  template:
+    metadata:
+      labels:
+        app: appointment
+        version: v1
+    spec:
+      containers:
+      - name: appointment
+        env:
+        - name: TZ
+          value: Asia/Shanghai
+        image: <image-name>
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            memory: 768Mi
+        volumeMounts:
+        - mountPath: /opt/webserver/lib/application.properties
+          name: application-config
+          subPath: application.properties
+        - mountPath: /opt/webserver/lib/logback.xml
+          name: logs-config
+          subPath: logback.xml
+      volumes:
+      - configMap:
+          items:
+          - key: application.properties
+            path: application.properties
+          name: appointment-config
+        name: application-config
+      - configMap:
+          items:
+          - key: logback.xml
+            path: logback.xml
+          name: appointment-logs
+        name: logs-config
