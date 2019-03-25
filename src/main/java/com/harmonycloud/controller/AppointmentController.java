@@ -16,7 +16,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.servicecomb.saga.omega.context.annotations.SagaStart;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -160,6 +162,8 @@ public class AppointmentController {
     @GetMapping("/attend")
     @ApiOperation(value = "Mark The Attendance", httpMethod = "GET")
     @ApiImplicitParam(name = "id", value = "AppointmentId", paramType = "query", dataType = "Integer")
+    @Transactional(rollbackFor = Throwable.class)
+    @SagaStart
     public CimsResponseWrapper<String> markAttendance(@RequestParam("id") Integer id) throws Exception {
         if (id == null || id <= 0) {
             throw new AppointmentException(ErrorMsgEnum.PARAMETER_ERROR.getMessage());

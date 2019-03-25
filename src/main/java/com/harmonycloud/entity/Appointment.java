@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "appoinment")
+@Table(name = "appointment")
 @ApiModel
 public class Appointment {
     @Id

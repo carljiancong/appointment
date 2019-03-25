@@ -140,8 +140,7 @@ public class AppointmentService {
      * @return
      * @throws Exception
      */
-    @Transactional(rollbackFor = Throwable.class)
-    @SagaStart
+
     public void markAttendance(Integer appointmentId) throws Exception {
         String msg = LogUtil.getRequest(request) + ", information='";
         UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()

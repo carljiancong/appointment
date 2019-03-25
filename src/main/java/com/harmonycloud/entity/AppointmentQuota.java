@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "Appoinment_quota")
+@Table(name = "Appointment_quota")
 @ApiModel
 public class AppointmentQuota {
     @Id
