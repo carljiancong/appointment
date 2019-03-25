@@ -28,16 +28,16 @@ import java.util.*;
 public class AppointmentController {
 
     @Autowired
-    AppointmentService appointmentService;
+    private AppointmentService appointmentService;
 
     @Autowired
-    AppointmentQuotaService appointmentQuotaService;
+    private AppointmentQuotaService appointmentQuotaService;
 
     /**
      * get patient appointment list
      *
      * @param patientId patientId
-     * @return
+     * @return CimsResponseWrapper
      * @throws Exception
      */
     @GetMapping("/appointmentHistory")
@@ -55,8 +55,8 @@ public class AppointmentController {
     /**
      * get the appointment quota in this month
      *
-     * @param appointmentByMonth
-     * @return
+     * @param appointmentByMonth model
+     * @return CimsResponseWrapper
      * @throws Exception
      */
     @ApiOperation(value = "quota list", response = AppointmentQuota.class)
@@ -84,7 +84,7 @@ public class AppointmentController {
      * get appointment list by special day
      *
      * @param appointmentAttend model
-     * @return
+     * @return CimsResponseWrapper
      * @throws Exception
      */
     @ApiOperation(value = "appointment list by special day", response = Appointment.class)
@@ -103,7 +103,7 @@ public class AppointmentController {
      * book appointment
      *
      * @param appointmentBo model
-     * @return
+     * @return CimsResponseWrapper
      * @throws Exception
      */
     @PostMapping("/book")
@@ -122,12 +122,12 @@ public class AppointmentController {
     /**
      * whether the day is fully booked and whether the appointment is duplicated
      *
-     * @param patientId
-     * @param typeId
-     * @param roomId
-     * @param clinicId
-     * @param date
-     * @return
+     * @param patientId patientId
+     * @param typeId typeId
+     * @param roomId roomId
+     * @param clinicId clinicId
+     * @param date appointmentDate
+     * @return CimsResponseWrapper
      * @throws Exception
      */
     @GetMapping("/isduplicated")
@@ -156,7 +156,7 @@ public class AppointmentController {
      * mark the appintment status attend
      *
      * @param id appointmentid
-     * @return
+     * @return CimsResponseWrapper
      * @throws Exception
      */
     @GetMapping("/attend")

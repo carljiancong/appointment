@@ -19,7 +19,7 @@ public class HolidayService {
     /**
      * get the holiday to redis
      *
-     * @return
+     * @return Set
      */
     @Cacheable(value = "holiday", unless = "#result == null")
     public Set<String> getHolidayDate() throws Exception {

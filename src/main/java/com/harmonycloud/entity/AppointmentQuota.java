@@ -1,14 +1,10 @@
 package com.harmonycloud.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "Appointment_quota")
-@ApiModel
 public class AppointmentQuota {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

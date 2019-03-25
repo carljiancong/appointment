@@ -62,7 +62,8 @@ public class Appointment {
 
     public Appointment(Integer patientId, Integer clinicId,
                        Integer encounterTypeId, Integer roomId, Date appointmentDate, String attendanceStatus,
-                       String patientDoc, String patientName, String patientSex, String encounterTypeName, String roomName, String clinicName) {
+                       String patientDoc, String patientName, String patientSex, String encounterTypeName,
+                       String roomName, String clinicName) {
         this.patientId = patientId;
         this.clinicId = clinicId;
         this.encounterTypeId = encounterTypeId;
