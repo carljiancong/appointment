@@ -28,14 +28,15 @@ public class AppointmentQuotaService {
     @Autowired
     private HolidayService holidayService;
     @Autowired
-    HttpServletRequest request;
+    private HttpServletRequest request;
 
 
     /**
      * get appointment quota in a month
      *
      * @param appointmentByMonth model
-     * @return
+     * @return List
+     * @throws Exception
      */
     public List<AppointmentQuotaBo> getAppointmentQuotaList(AppointmentByMonth appointmentByMonth) throws Exception {
         //get the holiday to set
@@ -92,7 +93,7 @@ public class AppointmentQuotaService {
      * @param clinicId        clinicId
      * @param encounterTypeId encounterTypeId
      * @param roomID          roomId
-     * @return
+     * @return Boolean
      */
     public Boolean isFull(String appointmentDate, Integer clinicId, Integer encounterTypeId, Integer roomID) {
         AppointmentQuota appointmentQuota = appointmentQuotaRepository.findByappointmentDate(clinicId, encounterTypeId, roomID, appointmentDate);

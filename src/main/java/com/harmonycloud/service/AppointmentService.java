@@ -42,14 +42,14 @@ public class AppointmentService {
     @Autowired
     private HolidayService holidayService;
     @Autowired
-    HttpServletRequest request;
+    private HttpServletRequest request;
 
 
     /**
      * get patient appointment history
      *
      * @param patientId patientId
-     * @return
+     * @return List
      * @throws Exception
      */
     public List<Appointment> getAppointmentHistory(Integer patientId) throws Exception {
@@ -67,7 +67,7 @@ public class AppointmentService {
      * book appointment
      *
      * @param appointmentBo model
-     * @return
+     * @return Appointment
      */
     public Appointment bookAppointment(AppointmentBo appointmentBo) throws Exception {
         Long time = System.currentTimeMillis();
@@ -103,7 +103,6 @@ public class AppointmentService {
      * @param typeId    encounterTypeId
      * @param roomId    roomId
      * @param date      appointmentDate
-     * @return
      */
     public void isDuplicated(Integer clinicId, Integer patientId, Integer typeId, Integer roomId, Date date) throws Exception {
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -137,7 +136,6 @@ public class AppointmentService {
      * mark appointment attend
      *
      * @param appointmentId appointmentId
-     * @return
      * @throws Exception
      */
 
@@ -170,7 +168,7 @@ public class AppointmentService {
      * get appointment list by special day
      *
      * @param appointmentAttend model
-     * @return
+     * @return List
      */
     public List<Appointment> getAppointmentList(AppointmentAttend appointmentAttend) {
         List<Appointment> appointmentList = new ArrayList<>();

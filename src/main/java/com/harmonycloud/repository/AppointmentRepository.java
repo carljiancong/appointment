@@ -15,18 +15,18 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     /**
      * 根据 patient id 查询该病人的预约情况
      *
-     * @param patientId
-     * @return
+     * @param patientId patientId
+     * @return List
      */
     List<Appointment> findByPatientId(Integer patientId);
 
     /**
      * 查询病人是否已有相同的预约记录
      *
-     * @param patientId
-     * @param encounterTypeId
-     * @param roomId
-     * @return
+     * @param patientId       patientId
+     * @param encounterTypeId encounterTypeId
+     * @param roomId          roomId
+     * @return List
      */
     List<Appointment> findByPatientIdAndEncounterTypeIdAndRoomIdAndAttendanceStatus(Integer patientId, Integer encounterTypeId, Integer roomId, String attendanceStatus);
 
