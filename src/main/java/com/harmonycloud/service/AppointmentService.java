@@ -55,12 +55,12 @@ public class AppointmentService {
     public List<Appointment> getAppointmentHistory(Integer patientId) throws Exception {
         String msg = LogUtil.getRequest(request) + ", information='";
 
-        List<Appointment> appoinmentList = appointmentRepository.findByPatientId(patientId);
-        if (CollectionUtils.isEmpty(appoinmentList)) {
+        List<Appointment> appointmentList = appointmentRepository.findByPatientId(patientId);
+        if (CollectionUtils.isEmpty(appointmentList)) {
             logger.info(msg + "The patient had no appointment history '");
             return null;
         }
-        return appoinmentList;
+        return appointmentList;
     }
 
     /**
