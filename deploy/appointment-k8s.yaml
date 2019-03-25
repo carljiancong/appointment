@@ -18,39 +18,49 @@ spec:
         version: v1
     spec:
       containers:
-      - name: appointment
-        env:
-        - name: TZ
-          value: Asia/Shanghai
-        image: <image-name>
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 80
-          protocol: TCP
-        resources:
-          limits:
-            cpu: 500m
-            memory: 2Gi
-          requests:
-            cpu: 500m
-            memory: 768Mi
-        volumeMounts:
-        - mountPath: /opt/webserver/lib/application.properties
-          name: application-config
-          subPath: application.properties
-        - mountPath: /opt/webserver/lib/logback.xml
-          name: logs-config
-          subPath: logback.xml
+        - name: appointment
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: ORACLE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: appointment-oracle
+                  key: user
+            - name: ORACLE_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: appointment-oracle
+                  key: pwd
+          image: <image-name>
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 768Mi
+          volumeMounts:
+            - mountPath: /opt/webserver/lib/application.properties
+              name: application-config
+              subPath: application.properties
+            - mountPath: /opt/webserver/lib/logback.xml
+              name: logs-config
+              subPath: logback.xml
       volumes:
-      - configMap:
-          items:
-          - key: application.properties
-            path: application.properties
-          name: appointment-config
-        name: application-config
-      - configMap:
-          items:
-          - key: logback.xml
-            path: logback.xml
-          name: appointment-logs
-        name: logs-config
+        - configMap:
+            items:
+              - key: application.properties
+                path: application.properties
+            name: appointment-config
+          name: application-config
+        - configMap:
+            items:
+              - key: logback.xml
+                path: logback.xml
+            name: appointment-logs
+          name: logs-config
