@@ -26,5 +26,5 @@ data:
     # Redis服务器连接密码（默认为空）
     spring.redis.password=
 
-    logging.path=/logs
+    logging.path=/app-logs
     logging.config=classpath:logback.xml
