@@ -163,13 +163,12 @@ public class AppointmentController {
     @ApiOperation(value = "Mark The Attendance", httpMethod = "GET")
     @ApiImplicitParam(name = "id", value = "AppointmentId", paramType = "query", dataType = "Integer")
     @Transactional(rollbackFor = Throwable.class)
-    @SagaStart
-    public CimsResponseWrapper<String> markAttendance(@RequestParam("id") Integer id, @PathVariable String cid) throws Exception {
+//    @SagaStart
+    public CimsResponseWrapper<String> markAttendance(@RequestParam("id") Integer id, @RequestParam("userId") Integer userId) throws Exception {
         if (id == null || id <= 0) {
             throw new AppointmentException(ErrorMsgEnum.PARAMETER_ERROR.getMessage());
         }
-        appointmentService.markAttendance(id,cid);
+        appointmentService.markAttendance(id,userId.toString());
         return new CimsResponseWrapper<>(true, null, "Mark attend success");
     }
-
 }
