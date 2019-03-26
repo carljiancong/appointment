@@ -114,22 +114,18 @@ public class AppointmentService {
 
         Boolean isfull = appointmentQuotaService.isFull(sdf.format(date), clinicId, typeId, roomId);
 
-        if (!isfull) {
-            List<Appointment> appointmentList = appointmentRepository.findByPatientIdAndEncounterTypeIdAndRoomIdAndAttendanceStatus(patientId, typeId, roomId, "Not Attend");
-            if (appointmentList.size() != 0) {
-                Date nowtime = sdf.parse(sdf.format(new Date()));
-                for (int i = 0; i < appointmentList.size(); i++) {
-                    Date appointmentTime = appointmentList.get(i).getAppointmentDate();
-                    int flag = appointmentTime.compareTo(nowtime);
-                    if (flag >= 0) {
-                        throw new AppointmentException(ErrorMsgEnum.DUPLICATED_BOOKING.getMessage());
-                    }
-                }
-            }
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
 
+        if (!isfull) {
+            List<Appointment> appointmentList = appointmentRepository.findAppointment(patientId, typeId, roomId, "Not Attend", sdf.format(calendar.getTime()));
+            if (appointmentList.size() != 0) {
+                throw new AppointmentException(ErrorMsgEnum.DUPLICATED_BOOKING.getMessage());
+            }
         } else {
             throw new AppointmentException(ErrorMsgEnum.FUll_BOOKING.getMessage());
         }
+
     }
 
     /**

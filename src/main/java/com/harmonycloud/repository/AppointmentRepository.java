@@ -28,7 +28,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
      * @param roomId          roomId
      * @return List
      */
-    List<Appointment> findByPatientIdAndEncounterTypeIdAndRoomIdAndAttendanceStatus(Integer patientId, Integer encounterTypeId, Integer roomId, String attendanceStatus);
+    @Query(nativeQuery = true, value = "select * from \"appointment\" where \"patient_id\" = ?1 and \"encounter_type_id\" =?2\n" +
+            "                              and \"room_id\" =?3 and \"attendance_status\" = ?4 and \"appointment_date\"  > to_date(?5,'yyyy-mm-dd')")
+    List<Appointment> findAppointment(Integer patientId, Integer encounterTypeId, Integer roomId, String attendanceStatus, String appointmentDate);
+
 
     Appointment findByAppointmentId(Integer appointmentId);
 
