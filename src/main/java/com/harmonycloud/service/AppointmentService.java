@@ -39,8 +39,10 @@ public class AppointmentService {
 
     @Autowired
     private AppointmentQuotaService appointmentQuotaService;
+
     @Autowired
     private HolidayService holidayService;
+
     @Autowired
     private HttpServletRequest request;
 
@@ -135,7 +137,7 @@ public class AppointmentService {
      * @throws Exception
      */
 
-    public void markAttendance(Integer appointmentId) throws Exception {
+    public void markAttendance(Integer appointmentId, String cid) throws Exception {
         String msg = LogUtil.getRequest(request) + ", information='";
         UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
@@ -156,6 +158,8 @@ public class AppointmentService {
             logger.info(msg + "create encounter error '");
             throw new AppointmentException(ErrorMsgEnum.ATTEND_ERROR.getMessage());
         }
+
+//        WebSocketService.sendInfo("Success", cid);
         logger.info(msg + "mark attend success '");
 
     }

@@ -123,10 +123,10 @@ public class AppointmentController {
      * whether the day is fully booked and whether the appointment is duplicated
      *
      * @param patientId patientId
-     * @param typeId typeId
-     * @param roomId roomId
-     * @param clinicId clinicId
-     * @param date appointmentDate
+     * @param typeId    typeId
+     * @param roomId    roomId
+     * @param clinicId  clinicId
+     * @param date      appointmentDate
      * @return CimsResponseWrapper
      * @throws Exception
      */
@@ -164,11 +164,11 @@ public class AppointmentController {
     @ApiImplicitParam(name = "id", value = "AppointmentId", paramType = "query", dataType = "Integer")
     @Transactional(rollbackFor = Throwable.class)
     @SagaStart
-    public CimsResponseWrapper<String> markAttendance(@RequestParam("id") Integer id) throws Exception {
+    public CimsResponseWrapper<String> markAttendance(@RequestParam("id") Integer id, @PathVariable String cid) throws Exception {
         if (id == null || id <= 0) {
             throw new AppointmentException(ErrorMsgEnum.PARAMETER_ERROR.getMessage());
         }
-        appointmentService.markAttendance(id);
+        appointmentService.markAttendance(id,cid);
         return new CimsResponseWrapper<>(true, null, "Mark attend success");
     }
 
