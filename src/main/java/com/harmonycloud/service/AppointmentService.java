@@ -137,7 +137,7 @@ public class AppointmentService {
      * @throws Exception
      */
 
-    public void markAttendance(Integer appointmentId, String userId) throws Exception {
+    public void markAttendance(Integer appointmentId) throws Exception {
         String msg = LogUtil.getRequest(request) + ", information='";
         UserPrincipal userDetails = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
@@ -159,7 +159,7 @@ public class AppointmentService {
             throw new AppointmentException(ErrorMsgEnum.ATTEND_ERROR.getMessage());
         }
 
-        WebSocketServer.sendInfo("Success", userId);
+        WebSocketServer.sendInfo("Success", null);
         logger.info(msg + "mark attend success '");
 
     }
