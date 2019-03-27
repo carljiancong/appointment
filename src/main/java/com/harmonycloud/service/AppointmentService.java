@@ -72,7 +72,7 @@ public class AppointmentService {
      * @return Appointment
      */
     public Appointment bookAppointment(AppointmentBo appointmentBo) throws Exception {
-        Long time = System.currentTimeMillis();
+
         String msg = LogUtil.getRequest(request) + ", information='";
 
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -91,8 +91,6 @@ public class AppointmentService {
         //update quota
         appointmentQuotaService.updateAppointmentQuotaList(sdf.format(appointment.getAppointmentDate()), clinicId, typeId, roomId);
         logger.info(msg + "book success :{}'", appointment);
-        System.out.println(System.currentTimeMillis() - time);
-        logger.info(msg + "running time :", (System.currentTimeMillis() - time));
         return appointment;
 
     }
@@ -116,11 +114,10 @@ public class AppointmentService {
 
         Boolean isfull = appointmentQuotaService.isFull(sdf.format(date), clinicId, typeId, roomId);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -1);
+
 
         if (!isfull) {
-            List<Appointment> appointmentList = appointmentRepository.findAppointment(patientId, typeId, roomId, "Not Attend", sdf.format(calendar.getTime()));
+            List<Appointment> appointmentList = appointmentRepository.findAppointment(patientId, typeId, roomId, "Not Attend", sdf.format(new Date()));
             if (appointmentList.size() != 0) {
                 throw new AppointmentException(ErrorMsgEnum.DUPLICATED_BOOKING.getMessage());
             }
@@ -155,7 +152,7 @@ public class AppointmentService {
                 appointment.getRoomId(), date, appointmentId);
 
         if (!syncService.save(config.getEncounterUri(), userDetails.getToken(), encounter).isSuccess()) {
-            logger.info(msg + "create encounter error '");
+            logger.error(msg + "create encounter error '");
             throw new AppointmentException(ErrorMsgEnum.ATTEND_ERROR.getMessage());
         }
 

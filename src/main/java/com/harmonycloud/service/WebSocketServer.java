@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
 @ServerEndpoint("/attendWebsocket/{userId}")
 public class WebSocketServer {
 
@@ -44,6 +43,7 @@ public class WebSocketServer {
         this.userId = userId;
         try {
             sendMessage("连接成功");
+            log.info("userId：" + userId + " 已连接..." + "当前连接数为：" + getOnlineCount());
         } catch (IOException e) {
             log.error("websocket IO异常");
         }
