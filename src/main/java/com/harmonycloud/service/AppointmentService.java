@@ -39,8 +39,10 @@ public class AppointmentService {
 
     @Autowired
     private AppointmentQuotaService appointmentQuotaService;
+
     @Autowired
     private HolidayService holidayService;
+
     @Autowired
     private HttpServletRequest request;
 
@@ -70,7 +72,7 @@ public class AppointmentService {
      * @return Appointment
      */
     public Appointment bookAppointment(AppointmentBo appointmentBo) throws Exception {
-        Long time = System.currentTimeMillis();
+
         String msg = LogUtil.getRequest(request) + ", information='";
 
         DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -89,8 +91,6 @@ public class AppointmentService {
         //update quota
         appointmentQuotaService.updateAppointmentQuotaList(sdf.format(appointment.getAppointmentDate()), clinicId, typeId, roomId);
         logger.info(msg + "book success :{}'", appointment);
-        System.out.println(System.currentTimeMillis() - time);
-        logger.info(msg + "running time :", (System.currentTimeMillis() - time));
         return appointment;
 
     }
@@ -114,22 +114,17 @@ public class AppointmentService {
 
         Boolean isfull = appointmentQuotaService.isFull(sdf.format(date), clinicId, typeId, roomId);
 
-        if (!isfull) {
-            List<Appointment> appointmentList = appointmentRepository.findByPatientIdAndEncounterTypeIdAndRoomIdAndAttendanceStatus(patientId, typeId, roomId, "Not Attend");
-            if (appointmentList.size() != 0) {
-                Date nowtime = sdf.parse(sdf.format(new Date()));
-                for (int i = 0; i < appointmentList.size(); i++) {
-                    Date appointmentTime = appointmentList.get(i).getAppointmentDate();
-                    int flag = appointmentTime.compareTo(nowtime);
-                    if (flag >= 0) {
-                        throw new AppointmentException(ErrorMsgEnum.DUPLICATED_BOOKING.getMessage());
-                    }
-                }
-            }
 
+
+        if (!isfull) {
+            List<Appointment> appointmentList = appointmentRepository.findAppointment(patientId, typeId, roomId, "Not Attend", sdf.format(new Date()));
+            if (appointmentList.size() != 0) {
+                throw new AppointmentException(ErrorMsgEnum.DUPLICATED_BOOKING.getMessage());
+            }
         } else {
             throw new AppointmentException(ErrorMsgEnum.FUll_BOOKING.getMessage());
         }
+
     }
 
     /**
@@ -157,9 +152,11 @@ public class AppointmentService {
                 appointment.getRoomId(), date, appointmentId);
 
         if (!syncService.save(config.getEncounterUri(), userDetails.getToken(), encounter).isSuccess()) {
-            logger.info(msg + "create encounter error '");
+            logger.error(msg + "create encounter error '");
             throw new AppointmentException(ErrorMsgEnum.ATTEND_ERROR.getMessage());
         }
+
+        WebSocketServer.sendInfo("Success", null);
         logger.info(msg + "mark attend success '");
 
     }

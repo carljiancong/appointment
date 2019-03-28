@@ -123,10 +123,10 @@ public class AppointmentController {
      * whether the day is fully booked and whether the appointment is duplicated
      *
      * @param patientId patientId
-     * @param typeId typeId
-     * @param roomId roomId
-     * @param clinicId clinicId
-     * @param date appointmentDate
+     * @param typeId    typeId
+     * @param roomId    roomId
+     * @param clinicId  clinicId
+     * @param date      appointmentDate
      * @return CimsResponseWrapper
      * @throws Exception
      */
@@ -171,5 +171,4 @@ public class AppointmentController {
         appointmentService.markAttendance(id);
         return new CimsResponseWrapper<>(true, null, "Mark attend success");
     }
-
 }
