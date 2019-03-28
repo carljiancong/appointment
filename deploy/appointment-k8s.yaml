@@ -32,10 +32,10 @@ spec:
                 secretKeyRef:
                   name: appointment-oracle
                   key: pwd
-          image: <image-name>
+          image: docker-registry.default.svc:5000/dhcims-msapoc-dev/appointment:133
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 8080
               protocol: TCP
           resources:
             limits:

@@ -15,8 +15,8 @@ data:
     spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
     spring.jpa.hibernate.ddl-auto=validate
     spring.jpa.properties.hibernate.globally_quoted_identifiers=true
-    security.publicKey=http://user/publicKey
-    service.encounter=http://encounter/encounter
+    security.publicKey=http://user:8080/publicKey
+    service.encounter=http://encounter:8080/encounter
     #saga
     alpha.cluster.address=saga-server:8080
     # Redis服务器地址
