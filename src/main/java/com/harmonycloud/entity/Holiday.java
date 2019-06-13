@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Table(name = "holiday")
 public class Holiday implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer holidayId;
 
     @Column(name = "holiday_date")
