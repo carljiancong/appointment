@@ -51,6 +51,11 @@ public class AppointmentController {
 
         return new CimsResponseWrapper<>(true, null, appointmentList);
     }
+    
+    @GetMapping("/publicKey")
+    public String publicKey() {
+    	return "";
+    }
 
     /**
      * get the appointment quota in this month
