@@ -12,7 +12,7 @@ import java.util.Date;
 @ApiModel
 public class Appointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer appointmentId;
 
     @Column(name = "patient_id")

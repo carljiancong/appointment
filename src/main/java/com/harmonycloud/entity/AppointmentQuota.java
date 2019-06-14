@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Table(name = "Appointment_quota")
 public class AppointmentQuota {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer appointmentQuotaId;
 
     @Column(name = "clinic_id")
