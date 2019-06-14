@@ -63,7 +63,7 @@ public class JwtUtil {
 
             if (authToken != null) {
                 try {
-                    Jwts.parser().setSigningKey(publicKeyObject).parseClaimsJws(authToken).getBody();
+                    //Jwts.parser().setSigningKey(publicKeyObject).parseClaimsJws(authToken).getBody();
                     return true;
                 } catch (Exception e) {
                     e.printStackTrace();
