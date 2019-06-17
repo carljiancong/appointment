@@ -1,4 +1,4 @@
-/*package com.harmonycloud.security;
+package com.harmonycloud.security;
 
 import com.harmonycloud.bo.UserPrincipal;
 import com.harmonycloud.entity.Appointment;
@@ -54,4 +54,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 }
-*/
